@@ -33,5 +33,6 @@ Introducing our revolutionary app designed for art enthusiasts and collectors wh
 - **Secure Transactions**: Safe and straightforward payment process with complete buyer assurance.
 
 Download our app today and transform your art collection with pieces that are truly one-of-a-kind.
+
 [View our design on Adobe XD](https://xd.adobe.com/view/18b01670-eedf-4844-afb6-91d85fd48cf0-4de3/)
 
