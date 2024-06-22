@@ -1,7 +1,7 @@
-
 import SwiftUI
 
 struct ContentView: View {
+    // Text constants
     let mainText: String = """
     Welcome to the unique world
     of art and perspective.
@@ -22,7 +22,7 @@ struct ContentView: View {
     Your desire is fully satisfied.
     
     Please chose the art genre below
-"""
+    """
     
     let natureText = "Nature"
     let modelsText = "Models"
@@ -32,135 +32,57 @@ struct ContentView: View {
         NavigationView {
             GeometryReader { geometry in
                 ZStack {
+                    // Background image
                     Image("mainBack") // Replace with your image name
                         .resizable()
                         .scaledToFill()
-                        .frame(width: geometry.size.width * 1.5, // Scale the width to 1.5 times the screen width
-                               height: geometry.size.height * 1.5) // Scale the height to 1.5 times the screen height
-                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2) // Center the image
-                        .edgesIgnoringSafeArea(.all) // Makes the image fill the entire screen
+                        .frame(width: geometry.size.width * 1.5, height: geometry.size.height * 1.5)
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        .edgesIgnoringSafeArea(.all)
                     
                     ScrollView(.vertical) {
                         VStack {
+                            // Logo image
                             Image("enoTransp")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 300, height: 100.0) // Resize and enlarge the image
+                                .frame(width: 300, height: 100.0)
+                            
+                            // Separator line
                             Rectangle()
                                 .fill(Color.white)
                                 .frame(width: geometry.size.width * 0.8, height: 2)
                                 .padding(.bottom, 45.0)
-                                
+                            
+                            // Main text
                             Text(mainText)
-                                .font(Font.custom("Papyrus", size: 20)) // Set custom font and size
-                                .foregroundColor(.white) // Set text color to white
-                                .multilineTextAlignment(.center) // Center-align the text
+                                .font(Font.custom("Papyrus", size: 20))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                            
+                            // Separator line
                             Rectangle()
                                 .fill(Color.white)
                                 .frame(width: geometry.size.width * 0.9, height: 2)
                                 .padding(.bottom, 70)
                             
                             // Nature Section
-                            NavigationLink(destination: GalleryView(title: natureText)) {
-                                VStack {
-                                    Image("nature")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 280, height: 280) // Resize and enlarge the image
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 14)
-                                                .stroke(Color.white, lineWidth: 3)
-                                        )
-                                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                                        .padding()
-                                    
-                                    Text(natureText)
-                                        .font(Font.custom("Papyrus", size: 25)) // Set custom font and size
-                                        .foregroundColor(.white) // Set text color to white
-                                        .multilineTextAlignment(.center) // Center-align the text
-                                }
-                            }
+                            navigationLinkSection(imageName: "nature", text: natureText, destination: GalleryView(title: natureText))
                             
                             // Architecture Section
-                            NavigationLink(destination: GalleryView(title: architectureText)) {
-                                VStack {
-                                    Image("italy")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 280, height: 280) // Resize and enlarge the image
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 14)
-                                                .stroke(Color.white, lineWidth: 3)
-                                        )
-                                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                                    
-                                    Text(architectureText)
-                                        .font(Font.custom("Papyrus", size: 25)) // Set custom font and size
-                                        .foregroundColor(.white) // Set text color to white
-                                        .multilineTextAlignment(.center) // Center-align the text
-                                }
-                            }
+                            navigationLinkSection(imageName: "italy", text: architectureText, destination: GalleryView(title: architectureText))
                             
                             // Models Section
-                            NavigationLink(destination: GalleryView(title: modelsText)) {
-                                VStack {
-                                    Image("models")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 280, height: 280) // Resize and enlarge the image
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 14)
-                                                .stroke(Color.white, lineWidth: 3)
-                                        )
-                                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                                        .padding()
-                                    
-                                    Text(modelsText)
-                                        .font(Font.custom("Papyrus", size: 25)) // Set custom font and size
-                                        .foregroundColor(.white) // Set text color to white
-                                        .multilineTextAlignment(.center) // Center-align the text
-                                }
-                            }
-
+                            navigationLinkSection(imageName: "models", text: modelsText, destination: GalleryView(title: modelsText))
+                            
+                            // Separator line
                             Rectangle()
                                 .fill(Color.white)
                                 .frame(width: geometry.size.width * 0.9, height: 2)
                                 .padding()
                             
-                            Rectangle()
-                                .fill(Color(red: 255 / 255, green: 255 / 255, blue: 255 / 255, opacity: 0.2))
-                                .frame(width: 300, height: 60)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.white, lineWidth: 1)
-                                )
-                                .cornerRadius(12.0)
-                                .overlay(
-                                    HStack(spacing: 10) {
-                                        Image("facebook") // Replace with your image name
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                            .padding(.trailing, 40.0)
-                                            .padding(.leading, -5.0)
-                                                                            
-                                        Image("viber") // Replace with your image name
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                            .padding(.leading, 10.0)
-                                                                            
-                                        Image("instagram") // Replace with your image name
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 50, height: 50)
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                                            .padding(.leading, 50.0)
-                                    }
-                                    .padding()
-                                )
+                            // Social media links
+                            socialMediaLinks()
                         }
                     }
                     .padding(.bottom, 15)
@@ -169,6 +91,60 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(.all)
             }
         }
+    }
+    
+    // Helper function to create a navigation link section
+    private func navigationLinkSection(imageName: String, text: String, destination: GalleryView) -> some View {
+        NavigationLink(destination: destination) {
+            VStack {
+                Image(imageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 280, height: 280)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(Color.white, lineWidth: 3)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .padding()
+                
+                Text(text)
+                    .font(Font.custom("Papyrus", size: 25))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+            }
+        }
+    }
+    
+    // Helper function to create social media links section
+    private func socialMediaLinks() -> some View {
+        Rectangle()
+            .fill(Color(red: 255 / 255, green: 255 / 255, blue: 255 / 255, opacity: 0.2))
+            .frame(width: 300, height: 60)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.white, lineWidth: 1)
+            )
+            .cornerRadius(12.0)
+            .overlay(
+                HStack(spacing: 10) {
+                    socialMediaIcon(imageName: "facebook", paddingLeading: -5, paddingTrailing: 40)
+                    socialMediaIcon(imageName: "viber", paddingLeading: 10)
+                    socialMediaIcon(imageName: "instagram", paddingLeading: 50)
+                }
+                .padding()
+            )
+    }
+    
+    // Helper function to create a social media icon
+    private func socialMediaIcon(imageName: String, paddingLeading: CGFloat = 0, paddingTrailing: CGFloat = 0) -> some View {
+        Image(imageName) // Replace with your image name
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 50, height: 50)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding(.leading, paddingLeading)
+            .padding(.trailing, paddingTrailing)
     }
 }
 
@@ -180,51 +156,48 @@ struct GalleryView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
+                // Background image
                 Image("mainBack") // Replace with your image name
                     .resizable()
                     .scaledToFill()
-                    .frame(width: geometry.size.width * 1.5, // Scale the width to 1.5 times the screen width
-                           height: geometry.size.height * 1.5) // Scale the height to 1.5 times the screen height
-                    .position(x: geometry.size.width / 2, y: geometry.size.height / 2) // Center the image
-                    .edgesIgnoringSafeArea(.all) // Makes the image fill the entire screen
+                    .frame(width: geometry.size.width * 1.5, height: geometry.size.height * 1.5)
+                    .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                    .edgesIgnoringSafeArea(.all)
                 
                 ScrollView(.vertical) {
                     VStack {
-                        ZStack {
-                            Image("enoTransp")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 300, height: 100.0)
-                                .offset(x: 0, y: 0)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.top, 50) // Adjust padding for safe area
+                        // Logo image
+                        Image("enoTransp")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 300, height: 100.0)
+                            .padding(.top, 50)
                         
+                        // Separator line
                         Rectangle()
                             .fill(Color.white)
                             .frame(width: geometry.size.width * 0.8, height: 2)
                             .padding(.bottom, 45.0)
                         
-                        VStack {
-                            Text(title)
-                                .font(Font.custom("Papyrus", size: 30))
-                                .padding()
-                            
-                            if title == "Nature" {
-                                natureGallery()
-                            }
-                            if title == "Architecture" {
-                                architectureGallery()
-                            }
-                            if title == "Models" {
-                                modelsGallery()
-                            }
-
-                            Spacer()
+                        // Gallery title
+                        Text(title)
+                            .font(Font.custom("Papyrus", size: 30))
+                            .padding()
+                        
+                        // Display appropriate gallery based on title
+                        if title == "Nature" {
+                            natureGallery()
+                        } else if title == "Architecture" {
+                            architectureGallery()
+                        } else if title == "Models" {
+                            modelsGallery()
                         }
+
+                        Spacer()
                     }
                 }
                 
+                // Back button
                 VStack {
                     HStack {
                         Button(action: {
@@ -235,14 +208,13 @@ struct GalleryView: View {
                                 Text("")
                             }
                             .foregroundColor(.white)
-                            .font(.system(size: 24)) 
+                            .font(.system(size: 24))
                         }
                         .padding()
                         .background(Color.black.opacity(0))
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .offset(x: -170, y: 35)
                     }
-                     // Adjust top and leading padding as needed
                     Spacer()
                 }
                 .padding(.bottom, 15)
@@ -253,86 +225,40 @@ struct GalleryView: View {
         .navigationBarHidden(true)
     }
     
+    // Gallery views for Nature, Architecture, and Models
     @ViewBuilder
     private func natureGallery() -> some View {
-        VStack {
-            HStack {
-                imageView(name: "Npic1")
-                imageView(name: "Npic2")
-            }
-            HStack {
-                imageView(name: "Npic3")
-                imageView(name: "Npic4")
-            }
-            HStack {
-                imageView(name: "Npic5")
-                imageView(name: "Npic6")
-            }
-            HStack {
-                imageView(name: "Npic7")
-                imageView(name: "Npic8")
-            }
-            HStack {
-                imageView(name: "Npic9")
-                imageView(name: "Npic10")
-            }
-        }
+        galleryGrid(imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10"])
     }
     
+    @ViewBuilder
     private func architectureGallery() -> some View {
+        galleryGrid(imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"])
+    }
+    
+    @ViewBuilder
+    private func modelsGallery() -> some View {
+        galleryGrid(imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10"])
+    }
+    
+    // Helper function to create a grid of images
+    private func galleryGrid(imageNames: [String]) -> some View {
         VStack {
-            HStack {
-                imageView(name: "Apic1")
-                imageView(name: "Apic2")
-            }
-            HStack {
-                imageView(name: "Apic3")
-                imageView(name: "Apic4")
-            }
-            HStack {
-                imageView(name: "Apic5")
-                imageView(name: "Apic6")
-            }
-            HStack {
-                imageView(name: "Apic7")
-                imageView(name: "Apic8")
-            }
-            HStack {
-                imageView(name: "Apic9")
-                imageView(name: "Apic10")
+            ForEach(0..<imageNames.count / 2) { rowIndex in
+                HStack {
+                    imageView(name: imageNames[rowIndex * 2])
+                    imageView(name: imageNames[rowIndex * 2 + 1])
+                }
             }
         }
     }
     
-    private func modelsGallery() -> some View {
-        VStack {
-            HStack {
-                imageView(name: "Mpic1")
-                imageView(name: "Mpic2")
-            }
-            HStack {
-                imageView(name: "Mpic3")
-                imageView(name: "Mpic4")
-            }
-            HStack {
-                imageView(name: "Mpic5")
-                imageView(name: "Mpic6")
-            }
-            HStack {
-                imageView(name: "Mpic7")
-                imageView(name: "Mpic8")
-            }
-            HStack {
-                imageView(name: "Mpic9")
-                imageView(name: "Mpic10")
-            }
-        }
-    }
+    // Helper function to create an image view
     private func imageView(name: String) -> some View {
         Image(name)
             .resizable()
             .aspectRatio(contentMode: .fit)
-            .frame(width: 160, height: 160) // Resize and enlarge the image
+            .frame(width: 160, height: 160)
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
                     .stroke(Color.white, lineWidth: 2)
@@ -341,8 +267,6 @@ struct GalleryView: View {
             .padding()
     }
 }
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
