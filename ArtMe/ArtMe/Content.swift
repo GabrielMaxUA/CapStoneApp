@@ -1,9 +1,10 @@
 import SwiftUI
 
-// ContentView is the main view of the app
+
+ //ContentView is the main view of the app
 struct ContentView: View {
     // Text constants
-    let mainText: String = """
+    let mainTextP: String = """
     Welcome to the unique world
     of art and perspective.
     By choosing the heart piece
@@ -25,6 +26,20 @@ struct ContentView: View {
     Please chose the art genre below
     """
     
+    let mainTextL: String = """
+    Welcome to the unique world of art and perspective.
+    By choosing the heart piece of your choice you will
+    become the only person in the world who owns
+    it.
+    Please enjoy the help and options provided by
+    us to chose the perfect photo of your own taste
+    so as view it in real like time in Your own place.
+    
+    We also help you to find the closest to You high quality
+    printshop to make sure Your desire is fully satisfied.
+    
+    Please chose the art genre below
+    """
     let natureText = "Nature"
     let modelsText = "Models"
     let architectureText = "Architecture"
@@ -34,80 +49,164 @@ struct ContentView: View {
     var body: some View {
         NavigationView { // Provides navigation capabilities
             GeometryReader { geometry in // GeometryReader to get the size of the parent container
-                ZStack { // ZStack to overlay views
-                    // Background image
-                    Image("mainBack") // Replace with your image name
-                        .resizable() // Makes the image resizable
-                        .scaledToFill() // Scales the image to fill the container
-                        .frame(width: geometry.size.width * 1.5, height: geometry.size.height * 1.5) // Sets the frame of the image
-                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2) // Positions the image in the center
-                        .edgesIgnoringSafeArea(.all) // Makes the image ignore safe area edges
-                    
-                    VStack { // Vertical stack for logo, text, and other content
-                        // Logo image
-                        Image("enoTransp") // Replace with your image name
+                if UIDevice.current.orientation.isPortrait{
+                    ZStack{ // ZStack to overlay views
+                        // Background image
+                        Image("mainBack") // Replace with your image name
                             .resizable() // Makes the image resizable
-                            .aspectRatio(contentMode: .fit) // Maintains aspect ratio
-                            .frame(width: 300, height: 100.0) // Sets the frame of the logo image
+                            .scaledToFill() // Scales the image to fill the container
+                            .frame(width: geometry.size.width * 1.5, height: geometry.size.height * 1.5) // Sets the frame of the image
+                            .position(x: geometry.size.width / 2, y: geometry.size.height / 2) // Positions the image in the center
+                            .edgesIgnoringSafeArea(.all) // Makes the image ignore safe area edges
                         
-                        // Separator line
-                        Rectangle() // Rectangle shape
-                            .fill(Color.white) // Fills the rectangle with white color
-                            .frame(width: geometry.size.width * 0.8, height: 2) // Sets the frame of the rectangle
-                        
-                        ScrollViewReader { proxy in // Allows programmatic scrolling
-                            ScrollView(.vertical) { // Vertical scroll view
-                                VStack { // Vertical stack for main text and navigation links
-                                    // Main text
-                                    Text(mainText) // Displays the main text
-                                        .font(Font.custom("Papyrus", size: 20)) // Sets custom font and size
-                                        .foregroundColor(.white) // Sets text color to white
-                                        .multilineTextAlignment(.center) // Centers the text
-                                        .id(scrollViewID) // Assigns an ID to the top of the content
+                        VStack { // Vertical stack for logo, text, and other content
+                            // Logo image
+                                Image("enoTransp") // Replace with your image name
+                                    .resizable() // Makes the image resizable
+                                    .aspectRatio(contentMode: .fit) // Maintains aspect ratio
+                                    .frame(width: 300, height: 100.0) // Sets the frame of the logo image
+                                
+                                // Separator line
+                                Rectangle() // Rectangle shape
+                                    .fill(Color.white) // Fills the rectangle with white color
+                                    .frame(width: geometry.size.width * 0.8, height: 2) // Sets the frame of the rectangle
+                          
+                            ScrollViewReader { proxy in // Allows programmatic scrolling
+                                ScrollView(.vertical) { // Vertical scroll view
+                                    VStack { // Vertical stack for main text and navigation links
+                                        // Main text
+                                        Text(mainTextP) // Displays the main text
+                                            .font(Font.custom("Papyrus", size: 20)) // Sets custom font and size
+                                            .foregroundColor(.white) // Sets text color to white
+                                            .multilineTextAlignment(.center) // Centers the text
+                                            .id(scrollViewID) // Assigns an ID to the top of the content
 
-                                    // Separator line
-                                    Rectangle() // Rectangle shape
-                                        .fill(Color.white) // Fills the rectangle with white color
-                                        .frame(width: geometry.size.width * 0.9, height: 2) // Sets the frame of the rectangle
-                                        .padding(.bottom, 70) // Adds bottom padding
+                                        // Separator line
+                                        Rectangle() // Rectangle shape
+                                            .fill(Color.white) // Fills the rectangle with white color
+                                            .frame(width: geometry.size.width * 0.9, height: 2) // Sets the frame of the rectangle
+                                            .padding(.bottom, 70) // Adds bottom padding
 
-                                    // Nature Section
-                                    navigationLinkSection(imageName: "nature", text: natureText, destination: GalleryView(title: natureText, imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12", "Npic14"], scrollToTop: {
-                                        withAnimation { // Scrolls to the top with animation
-                                            proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
-                                        }
-                                    }))
+                                        // Nature Section
+                                        navigationLinkSection(imageName: "nature", text: natureText, destination: GalleryView(title: natureText, imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12", "Npic14"], scrollToTop: {
+                                            withAnimation { // Scrolls to the top with animation
+                                                proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
+                                            }
+                                        }))
 
-                                    // Architecture Section
-                                    navigationLinkSection(imageName: "italy", text: architectureText, destination: GalleryView(title: architectureText, imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"], scrollToTop: {
-                                        withAnimation { // Scrolls to the top with animation
-                                            proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
-                                        }
-                                    }))
+                                        // Architecture Section
+                                        navigationLinkSection(imageName: "italy", text: architectureText, destination: GalleryView(title: architectureText, imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"], scrollToTop: {
+                                            withAnimation { // Scrolls to the top with animation
+                                                proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
+                                            }
+                                        }))
 
-                                    // Models Section
-                                    navigationLinkSection(imageName: "models", text: modelsText, destination: GalleryView(title: modelsText, imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"], scrollToTop: {
-                                        withAnimation { // Scrolls to the top with animation
-                                            proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
-                                        }
-                                    }))
+                                        // Models Section
+                                        navigationLinkSection(imageName: "models", text: modelsText, destination: GalleryView(title: modelsText, imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"], scrollToTop: {
+                                            withAnimation { // Scrolls to the top with animation
+                                                proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
+                                            }
+                                        }))
 
-                                    // Separator line
-                                    Rectangle() // Rectangle shape
-                                        .fill(Color.white) // Fills the rectangle with white color
-                                        .frame(width: geometry.size.width * 0.9, height: 2) // Sets the frame of the rectangle
-                                        .padding() // Adds padding
+                                        // Separator line
+                                        Rectangle() // Rectangle shape
+                                            .fill(Color.white) // Fills the rectangle with white color
+                                            .frame(width: geometry.size.width * 0.9, height: 2) // Sets the frame of the rectangle
+                                            .padding() // Adds padding
 
-                                    // Social media links
-                                    socialMediaLinks() // Displays social media links
+                                        // Social media links
+                                        socialMediaLinks() // Displays social media links
+                                    }
                                 }
                             }
                         }
+                        .padding(.bottom, 15) // Adds bottom padding
+                        .padding(.top, 50) // Adds top padding
                     }
-                    .padding(.bottom, 15) // Adds bottom padding
-                    .padding(.top, 50) // Adds top padding
+                    .edgesIgnoringSafeArea(.all) // Makes the ZStack ignore safe area edges
                 }
-                .edgesIgnoringSafeArea(.all) // Makes the ZStack ignore safe area edges
+                else {
+                    ZStack{ // ZStack to overlay views
+                        // Background image
+                        Image("mainBack") // Replace with your image name
+                            .resizable() // Makes the image resizable
+                            .scaledToFill() // Scales the image to fill the container
+                            .frame(width: geometry.size.width * 1.6, height: geometry.size.height * 1.5) // Sets the frame of the image
+                            .position(x: geometry.size.width / 1.6, y: geometry.size.height / 0.58) // Positions the image in the center
+                            .edgesIgnoringSafeArea(.all) // Makes the image ignore safe area edges
+                        
+                        VStack { // Vertical stack for logo, text, and other content
+                            // Logo image
+                                Image("enoTransp") // Replace with your image name
+                                    .resizable() // Makes the image resizable
+                                    .aspectRatio(contentMode: .fit) // Maintains aspect ratio
+                                    .frame(width: 300, height: 60.0) // Sets the frame of the logo image
+                                    
+                                // Separator line
+                                Rectangle() // Rectangle shape
+                                    .fill(Color.white) // Fills the rectangle with white color
+                                    .frame(width: geometry.size.width * 0.8, height: 2) // Sets the frame of the rectangle
+                            }
+                        .padding(.top, -190)
+                            
+                            ScrollViewReader { proxy in // Allows programmatic scrolling
+                                ScrollView(.vertical) { // Vertical scroll view
+                                    VStack { // Vertical stack for main text and navigation links
+                                        // Main text
+                                        Text(mainTextL) // Displays the main text
+                                            .font(Font.custom("Papyrus", size: 20)) // Sets custom font and size
+                                            .foregroundColor(.white) // Sets text color to white
+                                            .multilineTextAlignment(.center) // Centers the text
+                                            .id(scrollViewID) // Assigns an ID to the top of the content
+                                            .padding(.top, 40)
+
+                                        // Separator line
+                                        Rectangle() // Rectangle shape
+                                            .fill(Color.white) // Fills the rectangle with white color
+                                            .frame(width: geometry.size.width * 0.9, height: 2) // Sets the frame of the rectangle
+                                            .padding(.bottom, 70) // Adds bottom padding
+                                        HStack{
+                                            navigationLinkSection(imageName: "nature", text: natureText, destination: GalleryView(title: natureText, imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12", "Npic14"], scrollToTop: {
+                                                withAnimation { // Scrolls to the top with animation
+                                                    proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
+                                                }
+                                            }))
+
+                                            // Architecture Section
+                                            navigationLinkSection(imageName: "italy", text: architectureText, destination: GalleryView(title: architectureText, imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"], scrollToTop: {
+                                                withAnimation { // Scrolls to the top with animation
+                                                    proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
+                                                }
+                                            }))
+
+                                            // Models Section
+                                            navigationLinkSection(imageName: "models", text: modelsText, destination: GalleryView(title: modelsText, imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"], scrollToTop: {
+                                                withAnimation { // Scrolls to the top with animation
+                                                    proxy.scrollTo(scrollViewID, anchor: .top) // Scrolls to the top of the content
+                                                }
+                                            }))
+                                        }
+                                        // Nature Section
+                                        
+
+                                        // Separator line
+                                        Rectangle() // Rectangle shape
+                                            .fill(Color.white) // Fills the rectangle with white color
+                                            .frame(width: geometry.size.width * 0.9, height: 2) // Sets the frame of the rectangle
+                                            .padding() // Adds padding
+
+                                        // Social media links
+                                        socialMediaLinks() // Displays social media links
+                                    }
+                                }
+                            }
+                            .padding(.top, 40)
+                        }
+                        .padding(.bottom, 15) // Adds bottom padding
+                        .padding(.top, 50) // Adds top padding
+                    }
+                
+                }
             }
         }
     }
@@ -115,22 +214,43 @@ struct ContentView: View {
     // Helper function to create a navigation link section
     private func navigationLinkSection(imageName: String, text: String, destination: GalleryView) -> some View {
         NavigationLink(destination: destination) { // Creates a navigation link to the destination view
-            VStack { // Vertical stack for image and text
-                Image(imageName) // Displays the image
-                    .resizable() // Makes the image resizable
-                    .aspectRatio(contentMode: .fit) // Maintains aspect ratio
-                    .frame(width: 280, height: 280) // Sets the frame of the image
-                    .overlay( // Adds an overlay to the image
-                        RoundedRectangle(cornerRadius: 14) // Creates a rounded rectangle
-                            .stroke(Color.white, lineWidth: 3) // Strokes the rectangle with white color and 3-point width
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 14)) // Clips the image to a rounded rectangle shape
-                    .padding() // Adds padding around the image
-                
-                Text(text) // Displays the text
-                    .font(Font.custom("Papyrus", size: 25)) // Sets custom font and size
-                    .foregroundColor(.white) // Sets text color to white
-                    .multilineTextAlignment(.center) // Centers the text
+            if UIDevice.current.orientation.isPortrait{
+                VStack { // Vertical stack for image and text
+                    Image(imageName) // Displays the image
+                        .resizable() // Makes the image resizable
+                        .aspectRatio(contentMode: .fit) // Maintains aspect ratio
+                        .frame(width: 280, height: 280) // Sets the frame of the image
+                        .overlay( // Adds an overlay to the image
+                            RoundedRectangle(cornerRadius: 14) // Creates a rounded rectangle
+                                .stroke(Color.white, lineWidth: 3) // Strokes the rectangle with white color and 3-point width
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 14)) // Clips the image to a rounded rectangle shape
+                        .padding() // Adds padding around the image
+                    
+                    Text(text) // Displays the text
+                        .font(Font.custom("Papyrus", size: 25)) // Sets custom font and size
+                        .foregroundColor(.white) // Sets text color to white
+                        .multilineTextAlignment(.center) // Centers the text
+                }
+            }
+            else {
+                VStack { // Vertical stack for image and text
+                    Image(imageName) // Displays the image
+                        .resizable() // Makes the image resizable
+                        .aspectRatio(contentMode: .fit) // Maintains aspect ratio
+                        .frame(width: 180, height: 180) // Sets the frame of the image
+                        .overlay( // Adds an overlay to the image
+                            RoundedRectangle(cornerRadius: 14) // Creates a rounded rectangle
+                                .stroke(Color.white, lineWidth: 3) // Strokes the rectangle with white color and 3-point width
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 14)) // Clips the image to a rounded rectangle shape
+                        .padding() // Adds padding around the image
+                    
+                    Text(text) // Displays the text
+                        .font(Font.custom("Papyrus", size: 25)) // Sets custom font and size
+                        .foregroundColor(.white) // Sets text color to white
+                        .multilineTextAlignment(.center) // Centers the text
+                }
             }
         }
     }
@@ -165,7 +285,7 @@ struct ContentView: View {
             .padding(.leading, paddingLeading) // Adds leading padding
             .padding(.trailing, paddingTrailing) // Adds trailing padding
     }
-}
+
 
 // GalleryView to display the gallery images
 struct GalleryView: View {
@@ -230,7 +350,8 @@ struct GalleryView: View {
                     .padding(.trailing, 15) // Adds trailing padding
                     .padding(.leading, 15) // Adds leading padding
                     .padding(.top, 50) // Adds top padding
-                } else { // If the device is in landscape mode
+                } 
+                else { // If the device is in landscape mode
                     VStack { // Vertical stack for back button
                         HStack { // Horizontal stack for back button
                             Button(action: { // Back button action
@@ -255,7 +376,7 @@ struct GalleryView: View {
                     .padding(.bottom, 15) // Adds bottom padding
                     .padding(.trailing, 15) // Adds trailing padding
                     .padding(.leading, 15) // Adds leading padding
-                    .padding(.top, 50) // Adds top padding
+                    .padding(.top, 10) // Adds top padding
                 }
                 
                 // Full-screen image view
@@ -270,13 +391,37 @@ struct GalleryView: View {
     
     // Helper functions
     private func backgroundView(imageName: String, geometry: GeometryProxy) -> some View {
-        Image(imageName) // Displays the background image
-            .resizable() // Makes the image resizable
-            .scaledToFill() // Scales the image to fill the container
-            .frame(width: geometry.size.width * (imageName == "nature" ? 1.3 : imageName == "italy" ? 1.8 : 2), height: geometry.size.height * (imageName == "nature" ? 1.3 : imageName == "italy" ? 1.8 : 2)) // Sets the frame of the image
-            .position(x: geometry.size.width / (imageName == "nature" ? 2 : imageName == "italy" ? 1.2 : 1.45), y: geometry.size.height / (imageName == "nature" ? 2 : imageName == "italy" ? 1.2 : 1.45)) // Positions the image
-            .edgesIgnoringSafeArea(.all) // Makes the image ignore safe area edges
+        if UIDevice.current.orientation.isLandscape{
+            Image(imageName) // Displays the background image
+                .resizable() // Makes the image resizable
+                .scaledToFill() // Scales the image to fill the container
+                .frame(
+                    width: geometry.size.width * (imageName == "nature" ? 1.3 : imageName == "italy" ? 1.8 : imageName == "models" ? 1.6 : 2),
+                    height: geometry.size.height * (imageName == "nature" ? 1.3 : imageName == "italy" ? 1.3 : imageName == "models" ? 1.8 : 2)
+                ) // Sets the frame of the image based on the image name
+                .position(
+                    x: geometry.size.width / (imageName == "nature" ? 2 : imageName == "italy" ? 1.7 : imageName == "models" ? 1.3 : 1.45),
+                    y: geometry.size.height / (imageName == "nature" ? 1.5 : imageName == "italy" ? 0.9 : imageName == "models" ? 0.9 : 1.45)
+                ) // Positions the image based on the image name
+                .edgesIgnoringSafeArea(.all)
+        }
+        else {
+            Image(imageName) // Displays the background image
+                .resizable() // Makes the image resizable
+                .scaledToFill() // Scales the image to fill the container
+                .frame(
+                    width: geometry.size.width * (imageName == "nature" ? 2 : imageName == "italy" ? 1.8 : imageName == "models" ? 2 : 2),
+                    height: geometry.size.height * (imageName == "nature" ? 1.9 : imageName == "italy" ? 2 : imageName == "models" ? 2 : 2)
+                ) // Sets the frame of the image based on the image name
+                .position(
+                    x: geometry.size.width / (imageName == "nature" ? 2 : imageName == "italy" ? 1.7 : imageName == "models" ? 1.3 : 1.45),
+                    y: geometry.size.height / (imageName == "nature" ? 1.5 : imageName == "italy" ? 1 : imageName == "models" ? 1.3 : 1.45)
+                ) // Positions the image based on the image name
+                .edgesIgnoringSafeArea(.all)
+        }
+        // Makes the image ignore safe area edges
     }
+
     
     private func contentView<Content: View>(geometry: GeometryProxy, @ViewBuilder content: @escaping () -> Content) -> some View {
         VStack(spacing: 0) { // Vertical stack for content with no spacing
@@ -298,7 +443,7 @@ struct GalleryView: View {
                 Image("enoTransp") // Displays the logo image
                     .resizable() // Makes the image resizable
                     .aspectRatio(contentMode: .fit) // Maintains aspect ratio
-                    .frame(width: 300, height: 100.0) // Sets the frame of the image
+                    .frame(width: 300, height: 60.0) // Sets the frame of the image
                 
                 // Fixed Separator line
                 Rectangle() // Rectangle shape
@@ -572,6 +717,13 @@ struct GalleryView: View {
 // Preview provider for ContentView
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView() // Provides a preview of ContentView
+        Group {
+            ContentView()
+                .previewDisplayName("Portrait")
+            
+            ContentView()
+                .previewInterfaceOrientation(.landscapeLeft)
+                .previewDisplayName("Landscape")
+        }
     }
 }
