@@ -112,10 +112,11 @@ struct ContentView: View {
                                         Rectangle() // Rectangle shape
                                             .fill(Color.white) // Fills the rectangle with white color
                                             .frame(width: geometry.size.width * 0.9, height: 2) // Sets the frame of the rectangle
-                                            .padding() // Adds padding
+                                            .padding(.bottom, 5) // Adds padding
 
                                         // Social media links
-                                        socialMediaLinks() // Displays social media links
+                                        socialMediaLinks()
+                                            .padding(.bottom, 20)
                                     }
                                 }
                             }
@@ -196,7 +197,8 @@ struct ContentView: View {
                                             .padding() // Adds padding
 
                                         // Social media links
-                                        socialMediaLinks() // Displays social media links
+                                        socialMediaLinks()
+                                            .padding(.bottom, 20)
                                     }
                                 }
                             }
@@ -205,12 +207,29 @@ struct ContentView: View {
                         .padding(.bottom, 15) // Adds bottom padding
                         .padding(.top, 50) // Adds top padding
                     }
-                
                 }
             }
         }
     }
     
+
+// Model for Cart Item
+struct CartItem: Identifiable {
+    let id = UUID()
+    let imageName: String
+}
+
+// Cart Model
+class Cart: ObservableObject {
+    @Published var items: [CartItem] = []
+    
+    func addItem(imageName: String) {
+        let newItem = CartItem(imageName: imageName)
+        items.append(newItem)
+    }
+}
+
+
     // Helper function to create a navigation link section
     private func navigationLinkSection(imageName: String, text: String, destination: GalleryView) -> some View {
         NavigationLink(destination: destination) { // Creates a navigation link to the destination view
@@ -280,7 +299,7 @@ struct ContentView: View {
         Image(imageName) // Displays the icon image
             .resizable() // Makes the image resizable
             .aspectRatio(contentMode: .fit) // Maintains aspect ratio
-            .frame(width: 50, height: 50) // Sets the frame of the image
+            .frame(width: 50, height: 50)// Sets the frame of the image
             .clipShape(RoundedRectangle(cornerRadius: 10)) // Clips the image to a rounded rectangle shape
             .padding(.leading, paddingLeading) // Adds leading padding
             .padding(.trailing, paddingTrailing) // Adds trailing padding
@@ -291,6 +310,7 @@ struct ContentView: View {
 struct GalleryView: View {
     let title: String // Title of the gallery
     let imageNames: [String] // Names of the images in the gallery
+    @EnvironmentObject var cart: Cart // Access Cart instance from environment
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode> // Environment variable to handle presentation mode
     @State private var selectedImageIndex: Int = 0 // State variable for the selected image index
@@ -588,11 +608,12 @@ struct GalleryView: View {
                                         .foregroundColor(.white) // Sets the color to white
                                         .font(.system(size: 34)) // Sets the font size to 34
                                         .padding() // Adds padding around the icon
-                                        .padding(.leading, UIDevice.current.orientation.isLandscape ? 40 : 0) // Adds leading padding based on device orientation
+                                        .padding(.leading, UIDevice.current.orientation.isLandscape ? 50 : 0) // Adds leading padding based on device orientation
                                 }
                                 
                             }
-                            Spacer() // Adds a spacer
+                            Spacer()
+                            // Adds a spacer
                             if selectedImageIndex < imageNames.count - 1 { // Checks if not the last image
                                 Button(action: {
                                     if selectedImageIndex < imageNames.count - 1 { // Checks if not the last image
@@ -611,12 +632,81 @@ struct GalleryView: View {
                     }
                 }
             }
-            Spacer() // Adds a spacer
+            Spacer()
+            if showCrossButton {
+                GeometryReader { geo in
+                    if UIDevice.current.orientation.isPortrait {
+                        VStack {
+                            Spacer()
+                            HStack(spacing: 20) {
+                                Button(action: {
+                                    cart.addItem(imageName: imageName)// Add to Cart action
+                                }) {
+                                    Text("Add to Cart")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 20))
+                                        .padding()
+                                        .background(Color.gray)
+                                        .cornerRadius(10)
+                                }
+                                Button(action: {
+                                    // Try it On action
+                                }) {
+                                    Text("Try it On")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 17))
+                                        .padding()
+                                        .background(Color.gray)
+                                        .cornerRadius(10)
+                                }
+                            }
+                            .padding(.bottom, 40)
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity)
+                        }
+                        .frame(width: geo.size.width, height: geo.size.height)
+                    }
+                    else {
+                        VStack {
+                            Spacer()
+                            HStack(spacing: 120) {
+                                Button(action: {
+                                    // Add to Cart action
+                                }) {
+                                    Text("Add to Cart")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 17))
+                                        .padding()
+                                        .background(Color.gray)
+                                        .cornerRadius(10)
+                                }
+                                Button(action: {
+                                    // Try it On action
+                                }) {
+                                    Text("Try it On")
+                                        .foregroundColor(.white)
+                                        .font(.system(size: 20))
+                                        .padding()
+                                        .background(Color.gray)
+                                        .cornerRadius(10)
+                                }
+                            }
+                            .padding(.bottom, 40)
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity)
+                        }
+                        .frame(width: geo.size.width, height: geo.size.height)
+                    }
+                }
+            }
+
+
         }
         .edgesIgnoringSafeArea(.all) // Makes the ZStack ignore safe area edges
         .navigationBarHidden(true) // Hides the navigation bar
     }
 
+    
     // Gallery views for Nature, Architecture, and Models
     @ViewBuilder
     private func natureGallery() -> some View {
@@ -722,7 +812,7 @@ struct ContentView_Previews: PreviewProvider {
                 .previewDisplayName("Portrait")
             
             ContentView()
-                .previewInterfaceOrientation(.landscapeLeft)
+                .previewInterfaceOrientation(.landscapeRight)
                 .previewDisplayName("Landscape")
         }
     }
