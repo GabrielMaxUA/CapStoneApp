@@ -11,8 +11,8 @@ import SwiftUI
 class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let contentView = ContentView()
+
+        let contentView = ContentView().environmentObject(Cart())
         let hostingController = UIHostingController(rootView: contentView)
         
         addChild(hostingController)
