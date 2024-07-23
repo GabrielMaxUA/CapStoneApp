@@ -96,56 +96,47 @@ struct GalleryView: View {
         .padding(.bottom, 15)
     }
     
-    // Gallery views for Nature, Architecture, and Models
-    @ViewBuilder
     private func natureGallery() -> some View {
-        galleryGrid(imageNames: imageNames) // Calls galleryGrid with image names
-    }
-    
-    @ViewBuilder
-    private func architectureGallery() -> some View {
-        galleryGrid(imageNames: imageNames) // Calls galleryGrid with image names
-    }
-    
-    @ViewBuilder
-    private func modelsGallery() -> some View {
-        galleryGrid(imageNames: imageNames) // Calls galleryGrid with image names
-    }
-    
-    // Helper function to create a grid of images
-    private func galleryGrid(imageNames: [String]) -> some View {
-        VStack { // Vertical stack for image grid
-            ForEach(0..<(imageNames.count + 1) / 2, id: \.self) { rowIndex in // Iterates over the rows
-                HStack { // Horizontal stack for images
-                    ImageView(
-                        name: imageNames[rowIndex * 2],
-                        selectedImageIndex: $selectedImageIndex,
-                        showFullScreen: $showFullScreen,
-                        scale: $scale,
-                        lastScale: $lastScale,
-                        offset: $offset,
-                        lastOffset: $lastOffset,
-                        imageNames: imageNames
-                    )
-                    .environmentObject(cart)
-                    
-                    if rowIndex * 2 + 1 < imageNames.count { // Checks if there is a second image in the row
-                        ImageView(
-                            name: imageNames[rowIndex * 2 + 1],
-                            selectedImageIndex: $selectedImageIndex,
-                            showFullScreen: $showFullScreen,
-                            scale: $scale,
-                            lastScale: $lastScale,
-                            offset: $offset,
-                            lastOffset: $lastOffset,
-                            imageNames: imageNames
-                        )
-                        .environmentObject(cart)
-                    }
-                }
-            }
+            GalleryGrid(
+                imageNames: imageNames,
+                selectedImageIndex: $selectedImageIndex,
+                showFullScreen: $showFullScreen,
+                scale: $scale,
+                lastScale: $lastScale,
+                offset: $offset,
+                lastOffset: $lastOffset
+            )
+            .environmentObject(cart)
         }
-    }
+        
+        @ViewBuilder
+        private func architectureGallery() -> some View {
+            GalleryGrid(
+                imageNames: imageNames,
+                selectedImageIndex: $selectedImageIndex,
+                showFullScreen: $showFullScreen,
+                scale: $scale,
+                lastScale: $lastScale,
+                offset: $offset,
+                lastOffset: $lastOffset
+            )
+            .environmentObject(cart)
+        }
+        
+        @ViewBuilder
+        private func modelsGallery() -> some View {
+            GalleryGrid(
+                imageNames: imageNames,
+                selectedImageIndex: $selectedImageIndex,
+                showFullScreen: $showFullScreen,
+                scale: $scale,
+                lastScale: $lastScale,
+                offset: $offset,
+                lastOffset: $lastOffset
+            )
+            .environmentObject(cart)
+        }
+
 }
 
 struct GalleryView_Previews: PreviewProvider {

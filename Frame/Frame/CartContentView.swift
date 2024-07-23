@@ -12,7 +12,7 @@ struct CartContentView: View {
     @State private var scale: CGFloat = 1.0 // State variable for image scale
     @State private var lastScale: CGFloat = 1.0 // State variable for last image scale
     @State private var offset: CGSize = .zero // State variable for image offset
-    @State private var lastOffset: CGSize = .zero
+    @State private var lastOffset: CGSize = .zero // State variable for last image offset
 
     var body: some View {
         GeometryReader { geometry in
@@ -43,33 +43,16 @@ struct CartContentView: View {
                             .padding(.top, 100)
                     } else {
                         ScrollView(.vertical) {
-                            VStack(spacing: 0) {
-                                ForEach(0..<(cart.items.count + 1) / 2, id: \.self) { rowIndex in
-                                    HStack {
-                                        Spacer()
-                                        ForEach(0..<2) { columnIndex in
-                                            let index = rowIndex * 2 + columnIndex
-                                            if index < cart.items.count {
-                                                ImageView(
-                                                    name: cart.items[index].imageName,
-                                                    selectedImageIndex: $selectedImageIndex,
-                                                    showFullScreen: $showFullScreen,
-                                                    scale: $scale,
-                                                    lastScale: $lastScale,
-                                                    offset: $offset,
-                                                    lastOffset: $lastOffset,
-                                                    imageNames: imageNames
-                                                )
-                                                .environmentObject(cart)
-                                            } else if columnIndex == 0 {
-                                                Spacer()
-                                                    .frame(width: geometry.size.width * 0.35, height: geometry.size.width * 0.35)
-                                            }
-                                        }
-                                        Spacer()
-                                    }
-                                }
-                            }
+                            GalleryGrid(
+                                imageNames: cart.items.map { $0.imageName },
+                                selectedImageIndex: $selectedImageIndex,
+                                showFullScreen: $showFullScreen,
+                                scale: $scale,
+                                lastScale: $lastScale,
+                                offset: $offset,
+                                lastOffset: $lastOffset
+                            )
+                            .environmentObject(cart)
                         }
                         .padding(.bottom, 15)
 

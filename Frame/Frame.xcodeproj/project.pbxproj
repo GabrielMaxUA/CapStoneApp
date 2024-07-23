@@ -22,6 +22,7 @@
 		38DDEE1E2C4D8060001F1724 /* CartContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE1D2C4D8060001F1724 /* CartContentView.swift */; };
 		38DDEE222C4F3032001F1724 /* FullScreenImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE212C4F3032001F1724 /* FullScreenImageView.swift */; };
 		38DDEE242C4F30C9001F1724 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE232C4F30C9001F1724 /* ImageView.swift */; };
+		38DDEE262C4F3D03001F1724 /* GalleryGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE252C4F3D03001F1724 /* GalleryGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		38DDEE1D2C4D8060001F1724 /* CartContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartContentView.swift; sourceTree = "<group>"; };
 		38DDEE212C4F3032001F1724 /* FullScreenImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageView.swift; sourceTree = "<group>"; };
 		38DDEE232C4F30C9001F1724 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		38DDEE252C4F3D03001F1724 /* GalleryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				38DDEE212C4F3032001F1724 /* FullScreenImageView.swift */,
 				38DDEE132C4C12EE001F1724 /* Cart.swift */,
 				38DDEE1D2C4D8060001F1724 /* CartContentView.swift */,
+				38DDEE252C4F3D03001F1724 /* GalleryGrid.swift */,
 				38DDEDFE2C4BFBA5001F1724 /* Main.storyboard */,
 				38DDEE042C4BFBA5001F1724 /* Assets.xcassets */,
 				38DDEE062C4BFBA5001F1724 /* LaunchScreen.storyboard */,
@@ -165,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38DDEE262C4F3D03001F1724 /* GalleryGrid.swift in Sources */,
 				38DDEE242C4F30C9001F1724 /* ImageView.swift in Sources */,
 				38DDEE222C4F3032001F1724 /* FullScreenImageView.swift in Sources */,
 				38DDEDFD2C4BFBA5001F1724 /* Frame.swift in Sources */,
