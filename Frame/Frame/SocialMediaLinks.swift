@@ -33,7 +33,7 @@ struct SocialMediaLinks: View {
         Image(imageName) // Displays the icon image
             .resizable() // Makes the image resizable
             .aspectRatio(contentMode: .fit) // Maintains aspect ratio
-            .frame(width: 50, height: 50) // Sets the frame of the image
+            .frame(width: 30) // Sets the frame of the image
             .clipShape(RoundedRectangle(cornerRadius: 10)) // Clips the image to a rounded rectangle shape
             .padding(.leading, paddingLeading) // Adds leading padding
             .padding(.trailing, paddingTrailing) // Adds trailing padding

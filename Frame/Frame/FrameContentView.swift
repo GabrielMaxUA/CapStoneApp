@@ -58,23 +58,11 @@ struct FrameContentView: View {
                                         .frame(width: geometry.size.width * 0.6, height: 2)
                                         .padding(.bottom, 70)
                                     Spacer()
-                                    navigationLinkSection(imageName: "nature", text: natureText, destination: GalleryView(title: natureText, imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12", "Npic14"], scrollToTop: {
-                                        withAnimation {
-                                            proxy.scrollTo(scrollViewID, anchor: .top)
-                                        }
-                                    }).environmentObject(cart))
+                                    navigationLinkSection(imageName: "nature", text: natureText, destination: GalleryView(title: natureText, imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12", "Npic14"]).environmentObject(cart))
                                     Spacer()
-                                    navigationLinkSection(imageName: "italy", text: architectureText, destination: GalleryView(title: architectureText, imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"], scrollToTop: {
-                                        withAnimation {
-                                            proxy.scrollTo(scrollViewID, anchor: .top)
-                                        }
-                                    }).environmentObject(cart))
+                                    navigationLinkSection(imageName: "italy", text: architectureText, destination: GalleryView(title: architectureText, imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"]).environmentObject(cart))
                                     Spacer()
-                                    navigationLinkSection(imageName: "models", text: modelsText, destination:GalleryView(title: modelsText, imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"], scrollToTop: {
-                                        withAnimation {
-                                            proxy.scrollTo(scrollViewID, anchor: .top)
-                                        }
-                                    }).environmentObject(cart))
+                                    navigationLinkSection(imageName: "models", text: modelsText, destination:GalleryView(title: modelsText, imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"]).environmentObject(cart))
                                     Spacer()
                                     Rectangle()
                                         .fill(Color.white)
@@ -89,6 +77,17 @@ struct FrameContentView: View {
                 .padding(.top, 50)
             }
             .background(Color.black.edgesIgnoringSafeArea(.all))  // Add black background
+        }
+    }
+
+    struct YourApp: App {
+        @StateObject private var cart = Cart()
+
+        var body: some Scene {
+            WindowGroup {
+                FrameContentView()
+                    .environmentObject(cart)
+            }
         }
     }
 
@@ -132,24 +131,21 @@ struct FrameContentView_Previews: PreviewProvider {
             
             GalleryView(
                 title: "Nature",
-                imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12"],
-                scrollToTop: {}
+                imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12"]
             )
             .environmentObject(Cart())
             .previewDisplayName("Nature Gallery")
             
             GalleryView(
                 title: "Models",
-                imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"],
-                scrollToTop: {}
+                imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"]
             )
             .environmentObject(Cart())
             .previewDisplayName("Models Gallery")
             
             GalleryView(
                 title: "Architecture",
-                imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"],
-                scrollToTop: {}
+                imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"]
             )
             .environmentObject(Cart())
             .previewDisplayName("Architecture Gallery")
@@ -163,6 +159,10 @@ struct FrameContentView_Previews: PreviewProvider {
             CartContentView(title: "Cart", imageNames: ["Npic1", "Npic2", "Npic3"])
                 .environmentObject(Cart())
                 .previewDisplayName("Cart Content View")
+            
+            Checkout(imageNames: [""])
+                .environmentObject(cart)
+                .previewDisplayName("Checkout View")
         }
     }
 }

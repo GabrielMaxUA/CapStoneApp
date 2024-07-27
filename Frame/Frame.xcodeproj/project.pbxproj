@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3811DE772C5457E000B7AC81 /* Checkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3811DE762C5457E000B7AC81 /* Checkout.swift */; };
 		38DDEDF92C4BFBA5001F1724 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEDF82C4BFBA5001F1724 /* AppDelegate.swift */; };
 		38DDEDFB2C4BFBA5001F1724 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEDFA2C4BFBA5001F1724 /* SceneDelegate.swift */; };
 		38DDEDFD2C4BFBA5001F1724 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEDFC2C4BFBA5001F1724 /* Frame.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3811DE762C5457E000B7AC81 /* Checkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.swift; sourceTree = "<group>"; };
 		38DDEDF52C4BFBA5001F1724 /* Frame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Frame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38DDEDF82C4BFBA5001F1724 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38DDEDFA2C4BFBA5001F1724 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				38DDEE112C4C129E001F1724 /* GalleryView.swift */,
 				38DDEE232C4F30C9001F1724 /* ImageView.swift */,
 				38DDEE212C4F3032001F1724 /* FullScreenImageView.swift */,
+				3811DE762C5457E000B7AC81 /* Checkout.swift */,
 				38DDEE132C4C12EE001F1724 /* Cart.swift */,
 				38DDEE1D2C4D8060001F1724 /* CartContentView.swift */,
 				38DDEE252C4F3D03001F1724 /* GalleryGrid.swift */,
@@ -171,6 +174,7 @@
 				38DDEE262C4F3D03001F1724 /* GalleryGrid.swift in Sources */,
 				38DDEE242C4F30C9001F1724 /* ImageView.swift in Sources */,
 				38DDEE222C4F3032001F1724 /* FullScreenImageView.swift in Sources */,
+				3811DE772C5457E000B7AC81 /* Checkout.swift in Sources */,
 				38DDEDFD2C4BFBA5001F1724 /* Frame.swift in Sources */,
 				38DDEE182C4C2089001F1724 /* Header.swift in Sources */,
 				38DDEE122C4C129E001F1724 /* GalleryView.swift in Sources */,

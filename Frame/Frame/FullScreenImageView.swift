@@ -136,14 +136,12 @@ struct FullScreenImageView: View {
                                 }
                                 .padding(.trailing, 20)
                             }
-                            .padding(.top, 40)
+                            .padding(.top, 50)
                             .frame(width: geo.size.width, alignment: .top)
                         }
-                    }
-                     
-
+                        
                         Spacer()
-
+                        
                         HStack {
                             if selectedImageIndex > 0 {
                                 Button(action: {
@@ -176,9 +174,9 @@ struct FullScreenImageView: View {
                             }
                         }
                         .frame(width: geo.size.width, height: geo.size.height / 2, alignment: .center)
-
+                        
                         Spacer()
-
+                        
                         HStack(spacing: 20) {
                             if showAddButton {
                                 Button(action: {
@@ -198,7 +196,7 @@ struct FullScreenImageView: View {
                             }) {
                                 Text("Try it On")
                                     .foregroundColor(.white)
-                                    .font(.system(size: 17))
+                                    .font(.system(size: 20))
                                     .padding()
                                     .background(Color.gray)
                                     .cornerRadius(10)
@@ -207,6 +205,7 @@ struct FullScreenImageView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: .infinity)
                     }
+                }
                 .frame(height: geometry.size.height)
                 .edgesIgnoringSafeArea(.all)
                 .navigationBarHidden(true)

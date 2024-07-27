@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -8,8 +9,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         
-        let viewController = FrameViewController()
-        window.rootViewController = viewController
+        // Create the SwiftUI view that provides the window contents.
+        let cart = Cart() // Create the Cart instance
+        let contentView = FrameContentView().environmentObject(cart)
+        
+        // Use a UIHostingController as window root view controller.
+        window.rootViewController = UIHostingController(rootView: contentView)
         window.makeKeyAndVisible()
         
         return true

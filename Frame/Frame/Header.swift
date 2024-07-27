@@ -38,11 +38,10 @@ struct HeaderView: View {
                     .fill(Color.white)
                     .frame(width: geometry.size.width * 0.6, height: 2)
                 Spacer()
-                if showCart{
-                if !cart.items.isEmpty {
-                    ZStack {
-                            NavigationLink(destination:
-                                            CartContentView(title: "Cart", imageNames: cart.items.map { $0.imageName }).environmentObject(cart)){
+                if showCart {
+                    if !cart.items.isEmpty {
+                        ZStack {
+                            NavigationLink(destination: CartContentView(title: "Cart", imageNames: cart.items.map { $0.imageName }).environmentObject(cart)) {
                                 Image(systemName: "cart")
                                     .resizable()
                                     .scaledToFit()
@@ -54,10 +53,8 @@ struct HeaderView: View {
                                 .frame(width: 10)
                                 .offset(x: 2.5, y: -5)
                         }
-                    }
-                    else {
-                        NavigationLink(destination:
-                                        CartContentView(title: "Cart", imageNames: []).environmentObject(cart)){
+                    } else {
+                        NavigationLink(destination: CartContentView(title: "Cart", imageNames: []).environmentObject(cart)) {
                             Image(systemName: "cart")
                                 .resizable()
                                 .scaledToFit()
@@ -65,17 +62,14 @@ struct HeaderView: View {
                                 .foregroundColor(.white)
                         }
                     }
-                }
-                else{
+                } else {
                     Rectangle()
                         .fill(Color.clear)
                         .frame(width: 27, height: 27)
                 }
-              
                 Spacer()
             }
         }
-        //.background(Color.black)
     }
 }
 
