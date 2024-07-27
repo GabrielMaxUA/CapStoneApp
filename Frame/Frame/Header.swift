@@ -12,9 +12,8 @@ struct HeaderView: View {
             // Logo image
             Image("enoTransp")
                 .resizable()
-                .padding()
                 .scaledToFit()
-                .frame(width: geometry.size.width * 0.8)
+                .frame(width: geometry.size.width * 0.8, height: geometry.size.height / 9)
             
             // HStack positioned below the logo
             HStack {
@@ -70,6 +69,7 @@ struct HeaderView: View {
                 Spacer()
             }
         }
+        .background(Color.clear.edgesIgnoringSafeArea(.all))
     }
 }
 

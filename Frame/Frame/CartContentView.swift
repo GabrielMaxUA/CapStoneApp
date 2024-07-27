@@ -44,6 +44,7 @@ struct CartContentView: View {
                             .font(Font.custom("Papyrus", size: 35))
                             .foregroundColor(.white)
                             .padding(.top, 100)
+                     
                     } else {
                         ScrollView(.vertical) {
                             GalleryGrid(
@@ -109,26 +110,29 @@ struct CartContentView: View {
                                             .cornerRadius(10)
                                     }
                                     NavigationLink(destination: Checkout(imageNames: cart.items.map { $0.imageName }).environmentObject(cart)) {
-                                                                           Text("Check Out")
-                                                                               .padding()
-                                                                               .background(Color.gray)
-                                                                               .foregroundColor(.white)
-                                                                               .cornerRadius(10)
-                                                                       }
+                                            Text("Check Out")
+                                            .padding()
+                                            .background(Color.gray)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(10)
+                                    }
                                 }
                                 .padding(.bottom, 20)
+                            
                             }
 
-                            Rectangle()
-                                .fill(Color.white)
-                                .frame(width: geometry.size.width * 0.6, height: 2)
-                                .padding(.bottom, 5)
-
-                            SocialMediaLinks()
-                                .padding(.bottom, 20)
                         }
                         .frame(maxWidth: .infinity)
                     }
+                    Spacer()
+                    Rectangle()
+                        .fill(Color.white)
+                        .frame(width: geometry.size.width * 0.6, height: 2)
+                        .padding(.bottom, 5)
+
+                    SocialMediaLinks()
+                        .padding(.bottom, 20)
+
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
 

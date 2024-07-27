@@ -14,7 +14,7 @@ struct GalleryGrid: View {
     @EnvironmentObject var cart: Cart
 
     var body: some View {
-        if editMode && checkout {
+        if editMode {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
                 ForEach(imageNames.indices, id: \.self) { index in
                     ZStack {
@@ -40,10 +40,21 @@ struct GalleryGrid: View {
                 }
                 .padding()
             }
+        } else if checkout {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
+                ForEach(imageNames.indices, id: \.self) { index in
+                    Image(imageNames[index])
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 100, height: 100)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+            }
+            .padding()
         } else {
-            VStack { // Vertical stack for image grid
-                ForEach(0..<(imageNames.count + 1) / 2, id: \.self) { rowIndex in // Iterates over the rows
-                    HStack { // Horizontal stack for images
+            VStack {
+                ForEach(0..<(imageNames.count + 1) / 2, id: \.self) { rowIndex in
+                    HStack {
                         ImageView(
                             name: imageNames[rowIndex * 2],
                             selectedImageIndex: $selectedImageIndex,
@@ -56,7 +67,7 @@ struct GalleryGrid: View {
                         )
                         .environmentObject(cart)
 
-                        if rowIndex * 2 + 1 < imageNames.count { // Checks if there is a second image in the row
+                        if rowIndex * 2 + 1 < imageNames.count {
                             ImageView(
                                 name: imageNames[rowIndex * 2 + 1],
                                 selectedImageIndex: $selectedImageIndex,

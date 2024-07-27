@@ -49,15 +49,16 @@ struct GalleryView: View {
                             checkout: .constant(false)
                         )
                         .environmentObject(cart)
+                        Rectangle()
+                            .fill(Color.white)
+                            .frame(width: geometry.size.width * 0.6, height: 2)
+                            .padding(.bottom, 5)
+
+                        SocialMediaLinks()
+                            .padding(.bottom, 20)
                     }
 
-                    Rectangle()
-                        .fill(Color.white)
-                        .frame(width: geometry.size.width * 0.6, height: 2)
-                        .padding(.bottom, 5)
-
-                    SocialMediaLinks()
-                        .padding(.bottom, 20)
+                  
                 }
 
                 if showFullScreen {
@@ -88,7 +89,21 @@ struct GalleryView_Previews: PreviewProvider {
     static var previews: some View {
         GalleryView(
             title: "Nature",
-            imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5"]
+            imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12"]
+        )
+        .environmentObject(Cart())
+        .previewDisplayName("Nature Gallery")
+        
+        GalleryView(
+            title: "Models",
+            imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"]
+        )
+        .environmentObject(Cart())
+        .previewDisplayName("Models Gallery")
+        
+        GalleryView(
+            title: "Architecture",
+            imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"]
         )
         .environmentObject(Cart())
     }

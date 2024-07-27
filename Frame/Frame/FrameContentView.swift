@@ -43,7 +43,7 @@ struct FrameContentView: View {
                 ZStack {
                     VStack {
                         HeaderView(geometry: geometry, showChevron: false, showCart: true, onBack: nil)
-                            .padding(.top, -61)
+                            .padding(.top, -55)
                         ScrollViewReader { proxy in
                             ScrollView(.vertical) {
                                 VStack {
@@ -63,12 +63,13 @@ struct FrameContentView: View {
                                     navigationLinkSection(imageName: "italy", text: architectureText, destination: GalleryView(title: architectureText, imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"]).environmentObject(cart))
                                     Spacer()
                                     navigationLinkSection(imageName: "models", text: modelsText, destination:GalleryView(title: modelsText, imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"]).environmentObject(cart))
-                                    Spacer()
                                     Rectangle()
                                         .fill(Color.white)
                                         .frame(width: geometry.size.width * 0.6, height: 2)
-                                    SocialMediaLinks()
+                                        .padding(.bottom, 5)
                                         .padding(.top, 20)
+                                    SocialMediaLinks()
+                                        .padding(.bottom, -14)
                                 }
                             }
                         }
