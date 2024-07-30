@@ -5,18 +5,20 @@ struct Checkout: View {
     let title = """
 Check out
 """
-    //var amount: Double
     @EnvironmentObject var cart: Cart // Access Cart instance from environment
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode> // Environment variable to handle presentation mode
     let imageNames: [String] // Names of the images in the gallery
     var onBack: (() -> Void)? // Closure for back button action
     @State private var firstName: String = "" // State variable for first name input
     @State private var lastName: String = "" // State variable for last name input
-    @State private var middleName: String = ""    
-    @State private var cardNumber: String = ""
-    @State private var CVVNumber: String = ""
-    @State private var Email: String = ""
-    @State private var showInvalidEmailAlert: Bool = false
+    @State private var middleName: String = "" // State variable for middle name input
+    @State private var cardNumber: String = "" // State variable for card number input
+    @State private var CVVNumber: String = "" // State variable for CVV number input
+    @State private var Email: String = "" // State variable for email input
+    @State private var emailFieldActive: Bool = false // State variable for email field activity
+    @State private var showInvalidEmailAlert: Bool = false // State variable for invalid email alert
+    @State private var showAlert: Bool = false // State variable for alert visibility
+    @State private var alertMessage: String = "" // State variable for alert message
     @State private var selectedImageIndex: Int = 0 // State variable for the selected image index
     @State private var showFullScreen = false // State variable for full-screen view
     @State private var editCart = false // State variable for edit mode
@@ -27,6 +29,8 @@ Check out
     @State private var offset: CGSize = .zero // State variable for image offset
     @State private var lastOffset: CGSize = .zero // State variable for last image offset
     @State private var showCrossButton = true
+
+    private let pricePerImage: Double = 59.99
 
     var body: some View {
         GeometryReader { geometry in
@@ -50,21 +54,26 @@ Check out
                         .padding(.bottom, 0)
                     VStack {
                         HStack {
-                            
                             Text("Please enter your name:")
                                 .font(Font.custom("Papyrus", size: 17))
                                 .foregroundColor(.white)
                                 .padding(.bottom, 0)
                                 .padding(.leading, 10)
                             Spacer()
-                            TextField("First Name", text: $firstName)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 150) // Adjust width as needed
-                                .padding(.trailing, 10)
-                                .autocorrectionDisabled(true)
-                                .onChange(of: firstName) { oldValue, newValue in
-                                filterLettersOnly(&firstName, newValue:newValue)
-                                                    }
+                            HStack {
+                                if firstName.isEmpty {
+                                    Text("*")
+                                        .foregroundColor(.red)
+                                }
+                                TextField("First Name", text: $firstName)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .frame(width: 150) // Adjust width as needed
+                                    .padding(.trailing, 10)
+                                    .autocorrectionDisabled(true)
+                                    .onChange(of: firstName) { oldValue, newValue in
+                                        filterLettersOnly(&firstName, newValue: newValue)
+                                    }
+                            }
                         }
                         
                         HStack {
@@ -74,14 +83,20 @@ Check out
                                 .padding(.bottom, 0)
                                 .padding(.leading, 10)
                             Spacer()
-                            TextField("Last Name", text: $lastName)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 150) // Adjust width as needed
-                                .padding(.trailing, 10)
-                                .autocorrectionDisabled(true)
-                                .onChange(of: lastName) { oldValue, newValue in
-                                filterLettersOnly(&lastName, newValue: newValue)
-                                                    }
+                            HStack {
+                                if lastName.isEmpty {
+                                    Text("*")
+                                        .foregroundColor(.red)
+                                }
+                                TextField("Last Name", text: $lastName)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .frame(width: 150) // Adjust width as needed
+                                    .padding(.trailing, 10)
+                                    .autocorrectionDisabled(true)
+                                    .onChange(of: lastName) { oldValue, newValue in
+                                        filterLettersOnly(&lastName, newValue: newValue)
+                                    }
+                            }
                         }
                         HStack {
                             Text("Please enter your middle name:")
@@ -90,13 +105,13 @@ Check out
                                 .padding(.bottom, 0)
                                 .padding(.leading, 10)
                             Spacer()
-                            TextField("Middle Name", text: $middleName)
+                            TextField("Optional", text: $middleName)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 150) // Adjust width as needed
                                 .padding(.trailing, 10)
                                 .autocorrectionDisabled(true)
                                 .onChange(of: middleName) { oldValue, newValue in
-                                filterLettersOnly(&middleName, newValue: newValue)
+                                    filterLettersOnly(&middleName, newValue: newValue)
                                 }
                         }
                         HStack {
@@ -106,6 +121,12 @@ Check out
                                 .padding(.bottom, 0)
                                 .padding(.leading, 10)
                             Spacer()
+                            HStack{
+                                if cardNumber.isEmpty {
+                                    Text("*")
+                                        .foregroundColor(.red)
+                                }
+                            }
                             TextField("---- ---- ---- ----", text: $cardNumber)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .keyboardType(.numberPad)
@@ -122,62 +143,77 @@ Check out
                                 .padding(.bottom, 0)
                                 .padding(.leading, 10)
                             Spacer()
-                            TextField("CVV", text: $CVVNumber)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .keyboardType(.numberPad)
-                                .frame(width: 50) // Adjust width as needed
-                                .padding(.trailing, 10)
-                                .onChange(of: CVVNumber) { oldValue, newValue in
-                                formatCVVNumber()
+                            HStack {
+                                if CVVNumber.isEmpty {
+                                    Text("*")
+                                        .foregroundColor(.red)
                                 }
+                                TextField("CVV", text: $CVVNumber)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .keyboardType(.numberPad)
+                                    .frame(width: 50) // Adjust width as needed
+                                    .padding(.trailing, 10)
+                                    .onChange(of: CVVNumber) { oldValue, newValue in
+                                        formatCVVNumber()
+                                    }
+                            }
                             Spacer()
                         }
                         HStack {
                             Text("Please enter your Email:")
-                            .font(Font.custom("Papyrus", size: 17))
-                            .foregroundColor(.white)
-                            .padding(.bottom, 0)
-                            .padding(.leading, 10)
-                            Spacer()
-                            TextField("Email", text: $Email)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 200) // Adjust width as needed
-                            .padding(.trailing, 10)
-                            .autocapitalization(.none)
-                            .keyboardType(.emailAddress)
-                            .onChange(of: Email) { oldValue, newValue in
-                            showInvalidEmailAlert = !isValidEmail(newValue)
-                                }
-                            }
-
-                            if showInvalidEmailAlert {
-                                Text("Invalid email address")
-                                .font(Font.custom("Papyrus", size: 14))
-                                .foregroundColor(.red)
-                                .padding(.top, 5)
-                        }
-                        HStack{
-                            Spacer()
-                            Text("Total amount to purchase:")
-                                .font(Font.custom("Papyrus", size: 20))
+                                .font(Font.custom("Papyrus", size: 17))
                                 .foregroundColor(.white)
                                 .padding(.bottom, 0)
                                 .padding(.leading, 10)
-                                .padding(.top, 10)
                             Spacer()
+                            HStack {
+                                if showInvalidEmailAlert {
+                                    Text("!")
+                                        .foregroundColor(.red)
+                                }
+                                else{
+                                    Text("*")
+                                        .foregroundColor(.red)
+                                }
+                            }
+                                TextField("Email", text: $Email, onEditingChanged: { isActive in
+                                    emailFieldActive = isActive
+                                    if !isActive {
+                                        showInvalidEmailAlert = !isValidEmail(Email)
+                                    }
+                                })
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .frame(width: 200) // Adjust width as needed
+                                    .autocapitalization(.none)
+                                    .keyboardType(.emailAddress)
+                                    .autocorrectionDisabled(true)
                             
                         }
-                       
+
+                        HStack {
+                            Spacer()
+                            Text("Total: $\(totalAmount(), specifier: "%.2f")")
+                                .font(Font.custom("Papyrus", size: 24))
+                                .foregroundColor(.white)
+                                .padding(.bottom, 10)
+                                .padding(.leading, 10)
+                                .padding(.top, 10)
+                            Spacer()
+                        }
                     }
                     .padding(.top, 20)
-                   // .background(.yellow)
                     Spacer()
-                    NavigationLink(destination: Checkout(imageNames: cart.items.map { $0.imageName }).environmentObject(cart)) {
-                            Text("Check Out")
-                            .padding()
-                            .background(Color.gray)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
+                    Button(action: {
+                        validateFields()
+                    }) {
+                        Text("Place order")
+                        .padding()
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                    }
+                    .alert(isPresented: $showAlert) {
+                        Alert(title: Text("Invalid Input"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
                     }
                     Spacer()
                     
@@ -218,6 +254,7 @@ Check out
            }
            cardNumber = formatted
        }
+    
     private func formatCVVNumber() {
            // Filter out non-numeric characters and limit to 3 digits
            let digits = CVVNumber.filter { $0.isNumber }
@@ -232,11 +269,52 @@ Check out
           let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
           return emailTest.evaluate(with: email)
       }
+    
+    private func totalAmount() -> Double {
+        let subtotal = Double(imageNames.count) * pricePerImage
+        let tax = subtotal * 0.13
+        return subtotal + tax
+    }
+    
+    private func loadCartItemsFromUserDefaults() -> [String] {
+        if let savedItems = UserDefaults.standard.data(forKey: "cartItems") {
+            if let decodedItems = try? JSONDecoder().decode([CartItem].self, from: savedItems) {
+                print("Loading cart items for checkout: \(decodedItems.map { $0.imageName })")
+                return decodedItems.map { $0.imageName }
+            }
+        }
+        return []
+    }
+
+    private func validateFields() {
+        var missingFields = [String]()
+        
+        if firstName.isEmpty {
+            missingFields.append("First Name")
+        }
+        if lastName.isEmpty {
+            missingFields.append("Last Name")
+        }
+        if CVVNumber.isEmpty {
+            missingFields.append("CVV Number")
+        }
+        if !isValidEmail(Email) {
+            missingFields.append("Valid Email")
+        }
+        
+        if !missingFields.isEmpty {
+            alertMessage = "Please fill in the following fields: \(missingFields.joined(separator: ", "))"
+            showAlert = true
+        } else {
+            // Proceed to checkout
+            print("Proceed to checkout")
+        }
+    }
 }
 
 struct Checkout_Previews: PreviewProvider {
     static var previews: some View {
-        Checkout(imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"])
+        Checkout(imageNames: [])
             .environmentObject(Cart())
             .previewDisplayName("Checkout View")
     }

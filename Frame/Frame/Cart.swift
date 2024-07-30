@@ -1,7 +1,15 @@
 import SwiftUI
 
 class Cart: ObservableObject {
-    @Published var items: [CartItem] = []
+    @Published var items: [CartItem] = [] {
+        didSet {
+            saveCartItems()
+        }
+    }
+    
+    init() {
+        loadCartItems()
+    }
 
     func addItem(imageName: String) {
         if !items.contains(where: { $0.imageName == imageName }) {
@@ -19,8 +27,24 @@ class Cart: ObservableObject {
     func isInCart(imageName: String) -> Bool {
         return items.contains { $0.imageName == imageName }
     }
+    
+    private func saveCartItems() {
+        if let encoded = try? JSONEncoder().encode(items) {
+            UserDefaults.standard.set(encoded, forKey: "cartItems")
+            print("Saved cart items to UserDefaults: \(items.map { $0.imageName })")
+        }
+    }
+
+    private func loadCartItems() {
+        if let savedItems = UserDefaults.standard.data(forKey: "cartItems") {
+            if let decodedItems = try? JSONDecoder().decode([CartItem].self, from: savedItems) {
+                self.items = decodedItems
+                print("Loaded cart items from UserDefaults: \(items.map { $0.imageName })")
+            }
+        }
+    }
 }
 
-struct CartItem: Codable {
+struct CartItem: Codable, Equatable {
     let imageName: String
 }

@@ -11,6 +11,7 @@ struct CartContentView: View {
     @State private var editCart = false // State variable for edit mode
     @State private var checkout = false // State variable for checkout mode
     @State private var selectedImages: Set<Int> = [] // State variable for selected images
+    @State private var hiddenImages: Set<Int> = [] // State variable for hidden images
     @State private var scale: CGFloat = 1.0 // State variable for image scale
     @State private var lastScale: CGFloat = 1.0 // State variable for last image scale
     @State private var offset: CGSize = .zero // State variable for image offset
@@ -44,11 +45,12 @@ struct CartContentView: View {
                             .font(Font.custom("Papyrus", size: 35))
                             .foregroundColor(.white)
                             .padding(.top, 100)
-                     
                     } else {
                         ScrollView(.vertical) {
                             GalleryGrid(
-                                imageNames: cart.items.map { $0.imageName },
+                                imageNames: cart.items.enumerated().compactMap { index, item in
+                                    hiddenImages.contains(index) ? nil : item.imageName
+                                },
                                 selectedImageIndex: $selectedImageIndex,
                                 showFullScreen: $showFullScreen,
                                 scale: $scale,
@@ -67,30 +69,20 @@ struct CartContentView: View {
                             if editCart {
                                 HStack {
                                     Button(action: {
-                                        for index in selectedImages {
-                                            if let imageName = cart.items[safe: index]?.imageName {
-                                                cart.removeItem(imageName: imageName)
-                                            }
+                                        if selectedImages.isEmpty {
+                                            // Done action
+                                            cart.items.removeAll { hiddenImages.contains(cart.items.firstIndex(of: $0)!) }
+                                            hiddenImages.removeAll()
+                                            editCart = false
+                                            print("Done editing. Remaining cart items: \(cart.items.map { $0.imageName })")
+                                        } else {
+                                            // Delete action
+                                            hiddenImages.formUnion(selectedImages)
+                                            selectedImages.removeAll()
+                                            print("Deleted selected items. Remaining cart items: \(cart.items.enumerated().compactMap { index, item in hiddenImages.contains(index) ? nil : item.imageName })")
                                         }
-                                        editCart = false
-//                                        selectedImages.removeAll()
                                     }) {
-                                        Text("Delete")
-                                            .padding()
-                                            .background(Color.gray)
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                    Button(action: {
-                                        for index in selectedImages {
-                                            if let imageName = cart.items[safe: index]?.imageName {
-                                                cart.removeItem(imageName: imageName)
-                                            }
-                                        }
-                                        editCart = false
-//                                        selectedImages.removeAll()
-                                    }) {
-                                        Text("Done")
+                                        Text(selectedImages.isEmpty ? "Done" : "Delete")
                                             .padding()
                                             .background(Color.gray)
                                             .foregroundColor(.white)
@@ -109,8 +101,8 @@ struct CartContentView: View {
                                             .foregroundColor(.white)
                                             .cornerRadius(10)
                                     }
-                                    NavigationLink(destination: Checkout(imageNames: cart.items.map { $0.imageName }).environmentObject(cart)) {
-                                            Text("Check Out")
+                                    NavigationLink(destination: Checkout(imageNames: loadCartItemsFromUserDefaults()).environmentObject(cart)) {
+                                        Text("Check Out")
                                             .padding()
                                             .background(Color.gray)
                                             .foregroundColor(.white)
@@ -118,9 +110,7 @@ struct CartContentView: View {
                                     }
                                 }
                                 .padding(.bottom, 20)
-                            
                             }
-
                         }
                         .frame(maxWidth: .infinity)
                     }
@@ -132,7 +122,6 @@ struct CartContentView: View {
 
                     SocialMediaLinks()
                         .padding(.bottom, 20)
-
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
 
@@ -157,6 +146,16 @@ struct CartContentView: View {
             .edgesIgnoringSafeArea(.all)
         }
         .navigationBarHidden(true)
+    }
+    
+    private func loadCartItemsFromUserDefaults() -> [String] {
+        if let savedItems = UserDefaults.standard.data(forKey: "cartItems") {
+            if let decodedItems = try? JSONDecoder().decode([CartItem].self, from: savedItems) {
+                print("Loading cart items for checkout: \(decodedItems.map { $0.imageName })")
+                return decodedItems.map { $0.imageName }
+            }
+        }
+        return []
     }
 }
 
