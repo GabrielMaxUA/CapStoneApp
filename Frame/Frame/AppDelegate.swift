@@ -6,17 +6,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
-        
-        // Create the SwiftUI view that provides the window contents.
-        let cart = Cart() // Create the Cart instance
-        let contentView = FrameContentView().environmentObject(cart)
-        
-        // Use a UIHostingController as window root view controller.
-        window.rootViewController = UIHostingController(rootView: contentView)
-        window.makeKeyAndVisible()
-        
+        // This will be handled in the SceneDelegate for multi-scene apps
         return true
+    }
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        if let rootViewController = window?.rootViewController {
+            if rootViewController.presentedViewController is CameraViewController || rootViewController.presentedViewController is UIHostingController<FullScreenImageView> {
+                return .allButUpsideDown
+            }
+        }
+        return .portrait
     }
 }

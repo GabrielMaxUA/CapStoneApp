@@ -1,27 +1,23 @@
 import SwiftUI
 
 struct CartContentView: View {
-    let title: String // Title of the gallery
-    let imageNames: [String] // Names of the images in the gallery
-    @EnvironmentObject var cart: Cart // Access Cart instance from environment
+    let title: String
+    let imageNames: [String]
+    @EnvironmentObject var cart: Cart
 
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode> // Environment variable to handle presentation mode
-    @State private var selectedImageIndex: Int = 0 // State variable for the selected image index
-    @State private var showFullScreen = false // State variable for full-screen view
-    @State private var editCart = false // State variable for edit mode
-    @State private var checkout = false // State variable for checkout mode
-    @State private var selectedImages: Set<Int> = [] // State variable for selected images
-    @State private var hiddenImages: Set<Int> = [] // State variable for hidden images
-    @State private var scale: CGFloat = 1.0 // State variable for image scale
-    @State private var lastScale: CGFloat = 1.0 // State variable for last image scale
-    @State private var offset: CGSize = .zero // State variable for image offset
-    @State private var lastOffset: CGSize = .zero // State variable for last image offset
-    @State private var showCrossButton = true // State variable for cross button visibility
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @State private var selectedImageIndex: Int = 0
+    @State private var showFullScreen = false
+    @State private var checkout = false
+    @State private var scale: CGFloat = 1.0
+    @State private var lastScale: CGFloat = 1.0
+    @State private var offset: CGSize = .zero
+    @State private var lastOffset: CGSize = .zero
+    @State private var showCrossButton = true
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Background image
                 Image("mainBack")
                     .resizable()
                     .scaledToFill()
@@ -48,71 +44,38 @@ struct CartContentView: View {
                     } else {
                         ScrollView(.vertical) {
                             GalleryGrid(
-                                imageNames: cart.items.enumerated().compactMap { index, item in
-                                    hiddenImages.contains(index) ? nil : item.imageName
-                                },
+                                imageNames: cart.items.map { $0.imageName },
                                 selectedImageIndex: $selectedImageIndex,
                                 showFullScreen: $showFullScreen,
                                 scale: $scale,
                                 lastScale: $lastScale,
                                 offset: $offset,
                                 lastOffset: $lastOffset,
-                                selectedImages: $selectedImages,
-                                editMode: $editCart,
+                                selectedImages: .constant([]),
+                                editMode: .constant(false),
                                 checkout: $checkout
                             )
                             .environmentObject(cart)
                         }
                         .padding(.bottom, 15)
 
-                        VStack {
-                            if editCart {
-                                HStack {
-                                    Button(action: {
-                                        if selectedImages.isEmpty {
-                                            // Done action
-                                            cart.items.removeAll { hiddenImages.contains(cart.items.firstIndex(of: $0)!) }
-                                            hiddenImages.removeAll()
-                                            editCart = false
-                                            print("Done editing. Remaining cart items: \(cart.items.map { $0.imageName })")
-                                        } else {
-                                            // Delete action
-                                            hiddenImages.formUnion(selectedImages)
-                                            selectedImages.removeAll()
-                                            print("Deleted selected items. Remaining cart items: \(cart.items.enumerated().compactMap { index, item in hiddenImages.contains(index) ? nil : item.imageName })")
-                                        }
-                                    }) {
-                                        Text(selectedImages.isEmpty ? "Done" : "Delete")
-                                            .padding()
-                                            .background(Color.gray)
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                }
-                                .padding(.bottom, 20)
-                            } else {
-                                HStack {
-                                    Button(action: {
-                                        editCart = true
-                                    }) {
-                                        Text("Edit Cart")
-                                            .padding()
-                                            .background(Color.gray)
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                    NavigationLink(destination: Checkout(imageNames: loadCartItemsFromUserDefaults()).environmentObject(cart)) {
-                                        Text("Check Out")
-                                            .padding()
-                                            .background(Color.gray)
-                                            .foregroundColor(.white)
-                                            .cornerRadius(10)
-                                    }
-                                }
-                                .padding(.bottom, 20)
+                        HStack {
+                            NavigationLink(destination: EditMode().environmentObject(cart)) {
+                                Text("Edit Cart")
+                                    .padding()
+                                    .background(Color.gray)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            NavigationLink(destination: Checkout(imageNames: loadCartItemsFromUserDefaults()).environmentObject(cart)) {
+                                Text("Check Out")
+                                    .padding()
+                                    .background(Color.gray)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
                             }
                         }
-                        .frame(maxWidth: .infinity)
+                        .padding(.bottom, 20)
                     }
                     Spacer()
                     Rectangle()

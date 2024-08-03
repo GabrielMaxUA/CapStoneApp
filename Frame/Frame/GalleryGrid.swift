@@ -86,3 +86,21 @@ struct GalleryGrid: View {
         }
     }
 }
+
+struct GalleryGrid_Previews: PreviewProvider {
+    static var previews: some View {
+        GalleryGrid(
+            imageNames: ["Npic3", "Npic4", "Npic7", "Mpic7", "Mpic10", "Apic3", "Mpic3"],
+            selectedImageIndex: .constant(0),
+            showFullScreen: .constant(false),
+            scale: .constant(1.0),
+            lastScale: .constant(1.0),
+            offset: .constant(.zero),
+            lastOffset: .constant(.zero),
+            selectedImages: .constant(Set<Int>()),
+            editMode: .constant(true),
+            checkout: .constant(false)
+        )
+        .environmentObject(Cart())
+    }
+}

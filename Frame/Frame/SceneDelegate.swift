@@ -18,4 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
         }
     }
+
+    func windowScene(_ windowScene: UIWindowScene, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        if let rootViewController = window?.rootViewController {
+            if rootViewController.presentedViewController is CameraViewController || rootViewController.presentedViewController is UIHostingController<FullScreenImageView> {
+                return .allButUpsideDown
+            }
+        }
+        return .portrait
+    }
 }

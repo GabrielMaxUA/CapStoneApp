@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct FrameContentView: View {
+    @State private var navigateToCart = false
+    @EnvironmentObject var cart: Cart
+
     let maintext = """
     Welcome to the unique world
     of art and perspective.
@@ -14,36 +17,35 @@ struct FrameContentView: View {
     photo of your own taste
     so as view it in real like
     time in your own place.
-    
+
     We also help you to find
     the closest to You high quality
     printshop to make sure
     Your desire is fully satisfied.
-    
-    Please chose the art genre 
+
+    Please chose the art genre
     below
 """
     let natureText = "Nature"
     let modelsText = "Models"
     let architectureText = "Architecture"
     @State private var scrollViewID = UUID()
-    
-    @EnvironmentObject var cart: Cart
-    
+
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
-                // Background image
-                Image("mainBack")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: geometry.size.width * 1.5, height: geometry.size.height * 1.5)
-                    .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                    .edgesIgnoringSafeArea(.all)
                 ZStack {
+                    Image("mainBack")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width * 1.5, height: geometry.size.height * 1.5)
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2.8)
+                        .edgesIgnoringSafeArea(.all)
+                    
                     VStack {
                         HeaderView(geometry: geometry, showChevron: false, showCart: true, onBack: nil)
                             .padding(.top, -55)
+                        
                         ScrollViewReader { proxy in
                             ScrollView(.vertical) {
                                 VStack {
@@ -52,42 +54,56 @@ struct FrameContentView: View {
                                         .foregroundColor(.white)
                                         .multilineTextAlignment(.center)
                                         .id(scrollViewID)
-
+                                    
                                     Rectangle()
                                         .fill(Color.white)
                                         .frame(width: geometry.size.width * 0.6, height: 2)
                                         .padding(.bottom, 70)
+                                    
                                     Spacer()
+                                    
                                     navigationLinkSection(imageName: "nature", text: natureText, destination: GalleryView(title: natureText, imageNames: ["Npic1", "Npic2", "Npic3", "Npic4", "Npic5", "Npic6", "Npic7", "Npic8", "Npic9", "Npic10", "Npic11", "Npic13", "Npic12", "Npic14"]).environmentObject(cart))
+                                    
                                     Spacer()
+                                    
                                     navigationLinkSection(imageName: "italy", text: architectureText, destination: GalleryView(title: architectureText, imageNames: ["Apic1", "Apic2", "Apic3", "Apic4", "Apic5", "Apic6", "Apic7", "Apic8", "Apic9", "Apic10"]).environmentObject(cart))
+                                    
                                     Spacer()
-                                    navigationLinkSection(imageName: "models", text: modelsText, destination:GalleryView(title: modelsText, imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"]).environmentObject(cart))
+                                    
+                                    navigationLinkSection(imageName: "models", text: modelsText, destination: GalleryView(title: modelsText, imageNames: ["Mpic1", "Mpic2", "Mpic3", "Mpic4", "Mpic5", "Mpic6", "Mpic7", "Mpic8", "Mpic9", "Mpic10", "Mpic11", "Mpic12", "Mpic13", "Mpic14"]).environmentObject(cart))
+                                    
                                     Rectangle()
                                         .fill(Color.white)
                                         .frame(width: geometry.size.width * 0.6, height: 2)
                                         .padding(.bottom, 5)
                                         .padding(.top, 20)
+                                    
                                     SocialMediaLinks()
                                         .padding(.bottom, -14)
                                 }
                             }
                         }
+                        
+                        // Hidden NavigationLink to CartContentView
+                        NavigationLink(
+                            destination: CartContentView(title: "Cart", imageNames: cart.items.map { $0.imageName }).environmentObject(cart),
+                            isActive: $navigateToCart,
+                            label: {
+                                EmptyView()
+                            }
+                        )
                     }
                 }
                 .padding(.top, 50)
             }
             .background(Color.black.edgesIgnoringSafeArea(.all))  // Add black background
-        }
-    }
-
-    struct YourApp: App {
-        @StateObject private var cart = Cart()
-
-        var body: some Scene {
-            WindowGroup {
-                FrameContentView()
-                    .environmentObject(cart)
+            .onAppear {
+                NotificationCenter.default.addObserver(forName: Notification.Name("NavigateToCart"), object: nil, queue: .main) { _ in
+                    self.navigateToCart = true
+                }
+            }
+            .onDisappear {
+                NotificationCenter.default.removeObserver(self, name: Notification.Name("NavigateToCart"), object: nil)
             }
         }
     }
@@ -102,12 +118,10 @@ struct FrameContentView: View {
                     .overlay(
                         RoundedRectangle(cornerRadius: 14)
                             .stroke(Color.white, lineWidth: 1)
-                            
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 14))
-                    .shadow(color: .white, radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                    .shadow(color: .white, radius: 10)
                     .padding()
-                
                 
                 Text(text)
                     .font(Font.custom("Papyrus", size: 25))
@@ -161,10 +175,15 @@ struct FrameContentView_Previews: PreviewProvider {
                 .environmentObject(Cart())
                 .previewDisplayName("Cart Content View")
             
+            EditMode()
+                .environmentObject(Cart())
+                .previewDisplayName("Edit Mode")
+            
+                
+            
             Checkout(imageNames: [""])
                 .environmentObject(cart)
                 .previewDisplayName("Checkout View")
         }
     }
 }
-
