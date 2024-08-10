@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct GalleryView: View {
@@ -37,7 +36,7 @@ struct GalleryView: View {
 
                     ScrollView(.vertical) {
                         GalleryGrid(
-                            imageNames: imageNames,
+                            imageNames: filteredImageNames(),
                             selectedImageIndex: $selectedImageIndex,
                             showFullScreen: $showFullScreen,
                             scale: $scale,
@@ -63,7 +62,7 @@ struct GalleryView: View {
 
                 if showFullScreen {
                     FullScreenImageView(
-                        imageName: imageNames[selectedImageIndex],
+                        imageName: filteredImageNames()[selectedImageIndex],
                                             geometry: geometry,
                                             onBack: { self.showFullScreen = false },
                                             showFullScreen: $showFullScreen,
@@ -74,7 +73,7 @@ struct GalleryView: View {
                                             showCrossButton: $showCrossButton,
                                             selectedImageIndex: $selectedImageIndex,
                                             showCartIcon: true,
-                                            imageNames: imageNames
+                                            imageNames: filteredImageNames()
                     )
                     .environmentObject(cart)
                 }
@@ -82,6 +81,12 @@ struct GalleryView: View {
             .edgesIgnoringSafeArea(.all)
         }
         .navigationBarHidden(true)
+    }
+    
+    private func filteredImageNames() -> [String] {
+        return imageNames.filter { imageName in
+            !cart.items.contains { $0.imageName == imageName && $0.isCheckedOut }
+        }
     }
 }
 

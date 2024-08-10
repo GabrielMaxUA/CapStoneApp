@@ -106,6 +106,7 @@ struct FrameContentView: View {
                 NotificationCenter.default.removeObserver(self, name: Notification.Name("NavigateToCart"), object: nil)
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 
     private func navigationLinkSection<Destination: View>(imageName: String, text: String, destination: Destination) -> some View {

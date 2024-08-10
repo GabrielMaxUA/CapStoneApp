@@ -11,6 +11,10 @@
 		388D3F012C5D8EE0007026E6 /* EditMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388D3F002C5D8EE0007026E6 /* EditMode.swift */; };
 		388D3F032C5D9EF2007026E6 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388D3F022C5D9EF2007026E6 /* CameraView.swift */; };
 		388D3F052C5DB79A007026E6 /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388D3F042C5DB79A007026E6 /* DeviceRotationViewModifier.swift */; };
+		388D3F072C5DCA21007026E6 /* FrameContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE0F2C4C0059001F1724 /* FrameContentView.swift */; };
+		38D9D8B92C63025600B85D8C /* FinalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D9D8B82C63025600B85D8C /* FinalView.swift */; };
+		38D9D8BE2C6320E600B85D8C /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 38D9D8BD2C6320E600B85D8C /* ZIPFoundation */; };
+		38D9D8C12C6323AA00B85D8C /* SwiftSMTP in Frameworks */ = {isa = PBXBuildFile; productRef = 38D9D8C02C6323AA00B85D8C /* SwiftSMTP */; };
 		38DDEDF92C4BFBA5001F1724 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEDF82C4BFBA5001F1724 /* AppDelegate.swift */; };
 		38DDEDFB2C4BFBA5001F1724 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEDFA2C4BFBA5001F1724 /* SceneDelegate.swift */; };
 		38DDEDFD2C4BFBA5001F1724 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEDFC2C4BFBA5001F1724 /* Frame.swift */; };
@@ -18,7 +22,6 @@
 		38DDEE032C4BFBA5001F1724 /* Frame.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE012C4BFBA5001F1724 /* Frame.xcdatamodeld */; };
 		38DDEE052C4BFBA5001F1724 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38DDEE042C4BFBA5001F1724 /* Assets.xcassets */; };
 		38DDEE082C4BFBA5001F1724 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 38DDEE072C4BFBA5001F1724 /* Base */; };
-		38DDEE102C4C0059001F1724 /* FrameContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE0F2C4C0059001F1724 /* FrameContentView.swift */; };
 		38DDEE122C4C129E001F1724 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE112C4C129E001F1724 /* GalleryView.swift */; };
 		38DDEE142C4C12EE001F1724 /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE132C4C12EE001F1724 /* Cart.swift */; };
 		38DDEE162C4C1FBC001F1724 /* SocialMediaLinks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DDEE152C4C1FBC001F1724 /* SocialMediaLinks.swift */; };
@@ -34,6 +37,7 @@
 		388D3F002C5D8EE0007026E6 /* EditMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMode.swift; sourceTree = "<group>"; };
 		388D3F022C5D9EF2007026E6 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		388D3F042C5DB79A007026E6 /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
+		38D9D8B82C63025600B85D8C /* FinalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalView.swift; sourceTree = "<group>"; };
 		38DDEDF52C4BFBA5001F1724 /* Frame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Frame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38DDEDF82C4BFBA5001F1724 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38DDEDFA2C4BFBA5001F1724 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38D9D8C12C6323AA00B85D8C /* SwiftSMTP in Frameworks */,
+				38D9D8BE2C6320E600B85D8C /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +103,7 @@
 				388D3F042C5DB79A007026E6 /* DeviceRotationViewModifier.swift */,
 				388D3F022C5D9EF2007026E6 /* CameraView.swift */,
 				3811DE762C5457E000B7AC81 /* Checkout.swift */,
+				38D9D8B82C63025600B85D8C /* FinalView.swift */,
 				38DDEE132C4C12EE001F1724 /* Cart.swift */,
 				38DDEE1D2C4D8060001F1724 /* CartContentView.swift */,
 				38DDEE252C4F3D03001F1724 /* GalleryGrid.swift */,
@@ -125,6 +132,10 @@
 			dependencies = (
 			);
 			name = Frame;
+			packageProductDependencies = (
+				38D9D8BD2C6320E600B85D8C /* ZIPFoundation */,
+				38D9D8C02C6323AA00B85D8C /* SwiftSMTP */,
+			);
 			productName = Frame;
 			productReference = 38DDEDF52C4BFBA5001F1724 /* Frame.app */;
 			productType = "com.apple.product-type.application";
@@ -153,6 +164,10 @@
 				Base,
 			);
 			mainGroup = 38DDEDEC2C4BFBA5001F1724;
+			packageReferences = (
+				38D9D8BC2C6320E600B85D8C /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				38D9D8BF2C6323AA00B85D8C /* XCRemoteSwiftPackageReference "Swift-SMTP" */,
+			);
 			productRefGroup = 38DDEDF62C4BFBA5001F1724 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -183,8 +198,10 @@
 				38DDEE262C4F3D03001F1724 /* GalleryGrid.swift in Sources */,
 				38DDEE242C4F30C9001F1724 /* ImageView.swift in Sources */,
 				38DDEE222C4F3032001F1724 /* FullScreenImageView.swift in Sources */,
+				38D9D8B92C63025600B85D8C /* FinalView.swift in Sources */,
 				3811DE772C5457E000B7AC81 /* Checkout.swift in Sources */,
 				38DDEDFD2C4BFBA5001F1724 /* Frame.swift in Sources */,
+				388D3F072C5DCA21007026E6 /* FrameContentView.swift in Sources */,
 				38DDEE182C4C2089001F1724 /* Header.swift in Sources */,
 				38DDEE122C4C129E001F1724 /* GalleryView.swift in Sources */,
 				388D3F052C5DB79A007026E6 /* DeviceRotationViewModifier.swift in Sources */,
@@ -195,7 +212,6 @@
 				38DDEE162C4C1FBC001F1724 /* SocialMediaLinks.swift in Sources */,
 				388D3F012C5D8EE0007026E6 /* EditMode.swift in Sources */,
 				38DDEDFB2C4BFBA5001F1724 /* SceneDelegate.swift in Sources */,
-				38DDEE102C4C0059001F1724 /* FrameContentView.swift in Sources */,
 				388D3F032C5D9EF2007026E6 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,6 +441,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		38D9D8BC2C6320E600B85D8C /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
+		38D9D8BF2C6323AA00B85D8C /* XCRemoteSwiftPackageReference "Swift-SMTP" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/IBM-Swift/Swift-SMTP.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		38D9D8BD2C6320E600B85D8C /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 38D9D8BC2C6320E600B85D8C /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		38D9D8C02C6323AA00B85D8C /* SwiftSMTP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 38D9D8BF2C6323AA00B85D8C /* XCRemoteSwiftPackageReference "Swift-SMTP" */;
+			productName = SwiftSMTP;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		38DDEE012C4BFBA5001F1724 /* Frame.xcdatamodeld */ = {

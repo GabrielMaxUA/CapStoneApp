@@ -3,6 +3,8 @@ import SwiftUI
 struct CartContentView: View {
     let title: String
     let imageNames: [String]
+    let pricePerImage: Double = 59.99
+    
     @EnvironmentObject var cart: Cart
 
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
@@ -14,6 +16,7 @@ struct CartContentView: View {
     @State private var offset: CGSize = .zero
     @State private var lastOffset: CGSize = .zero
     @State private var showCrossButton = true
+    
 
     var body: some View {
         GeometryReader { geometry in
@@ -75,7 +78,14 @@ struct CartContentView: View {
                                     .cornerRadius(10)
                             }
                         }
-                        .padding(.bottom, 20)
+                    }
+                    HStack {
+                        Spacer()
+                        Text("Total: $\(totalAmount(), specifier: "%.2f")")
+                            .font(Font.custom("Papyrus", size: 24))
+                            .foregroundColor(.white)
+                            .padding(.leading, 10)
+                        Spacer()
                     }
                     Spacer()
                     Rectangle()
@@ -119,6 +129,11 @@ struct CartContentView: View {
             }
         }
         return []
+    }
+    
+    private func totalAmount() -> Double {
+        let subtotal = Double(imageNames.count) * pricePerImage
+        return subtotal
     }
 }
 

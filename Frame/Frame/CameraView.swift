@@ -11,10 +11,17 @@ struct CameraView: UIViewControllerRepresentable {
         viewController.imageName = imageName
         viewController.geometry = geometry
         viewController.onDismiss = onDismiss
+
+        // Ensure the view controller is presented in full screen
+        viewController.modalPresentationStyle = .fullScreen
         return viewController
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(parent: self)
+    }
 
     class Coordinator: NSObject, AVCapturePhotoCaptureDelegate {
         var parent: CameraView
@@ -22,10 +29,6 @@ struct CameraView: UIViewControllerRepresentable {
         init(parent: CameraView) {
             self.parent = parent
         }
-    }
-
-    func makeCoordinator() -> Coordinator {
-        return Coordinator(parent: self)
     }
 }
 
@@ -38,10 +41,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     private var imageView: UIImageView?
     private var dismissButton: UIButton?
     private var scale: CGFloat = 1.0
-    private var lastScale: CGFloat = 1.0
+    private var rotationAngle: CGFloat = 0.0 // Store the current rotation angle
     private var dismissButtonTopConstraint: NSLayoutConstraint?
     private var dismissButtonTrailingConstraint: NSLayoutConstraint?
     private var dismissButtonBottomConstraint: NSLayoutConstraint?
+    private var dismissButtonLeadingConstraint: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +53,11 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         checkCameraPermission()
         setupUI()
         NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: UIDevice.orientationDidChangeNotification, object: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -63,6 +72,14 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         return true
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
+    override var childForStatusBarHidden: UIViewController? {
+        return nil
+    }
+
     @objc private func orientationChanged() {
         updateLayoutForCurrentOrientation()
     }
@@ -70,37 +87,46 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
     private func setupUI() {
         setupCamera()
 
-        let dismissButton = UIButton(type: .system)
-        dismissButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-        dismissButton.tintColor = .white
-        dismissButton.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
-        dismissButton.translatesAutoresizingMaskIntoConstraints = false
-        dismissButton.imageView?.contentMode = .scaleAspectFit
-        self.dismissButton = dismissButton
-        view.addSubview(dismissButton)
-        print("Dismiss button added to view")
+        dismissButton = UIButton(type: .system)
+        dismissButton?.setImage(UIImage(systemName: "xmark"), for: .normal)
+        dismissButton?.tintColor = .white
+        dismissButton?.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        dismissButton?.translatesAutoresizingMaskIntoConstraints = false
+        dismissButton?.imageView?.contentMode = .scaleAspectFit
+        if let dismissButton = dismissButton {
+            view.addSubview(dismissButton)
+        }
 
-        // Set initial constraints for the dismiss button
-        dismissButtonTrailingConstraint = dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40)
-        dismissButtonTopConstraint = dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 50)
-        dismissButtonBottomConstraint = dismissButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
-        
-        dismissButtonTrailingConstraint?.isActive = true
-        dismissButtonTopConstraint?.isActive = true
-        dismissButton.widthAnchor.constraint(equalToConstant: 27).isActive = true
-        dismissButton.heightAnchor.constraint(equalToConstant: 27).isActive = true
+        // Add the overlay image and frame
+        if let imageName = imageName {
+            let image = UIImage(named: imageName)
+            imageView = UIImageView(image: image)
+            imageView?.contentMode = .scaleAspectFit
+            imageView?.translatesAutoresizingMaskIntoConstraints = false
+            imageView?.layer.shadowColor = UIColor.lightGray.cgColor
+            imageView?.layer.shadowOpacity = 0.8
+            imageView?.layer.shadowOffset = CGSize(width: 2, height: 2)
+            imageView?.layer.shadowRadius = 5
+            if let imageView = imageView {
+                view.addSubview(imageView)
+            }
 
-        // Set initial constraints for the image view
-        if let imageView = imageView {
+            // Set constraints for the image view
             NSLayoutConstraint.activate([
-                imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
-                imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
+                imageView!.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                imageView!.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                imageView!.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+                imageView!.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
             ])
         }
 
-        updateLayoutForCurrentOrientation()
+        // Set initial constraints for the dismiss button
+        updateLayoutForCurrentOrientation() // Set initial location of the dismiss button
+
+        // Add pinch gesture for zooming
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinchGesture(_:)))
+        imageView?.addGestureRecognizer(pinchGesture)
+        imageView?.isUserInteractionEnabled = true // Enable interaction
     }
 
     @objc private func dismissView() {
@@ -145,21 +171,7 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
 
         captureSession.startRunning()
         print("CameraViewController: captureSession started running")
-
-        // Add the overlay image
-        if let imageName = imageName, let geometry = geometry {
-            let image = UIImage(named: imageName)
-            imageView = UIImageView(image: image)
-            imageView?.contentMode = .scaleAspectFit
-            imageView?.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(imageView!)
-            print("Image view added to view")
-
-        } else {
-            print("CameraViewController: imageName or geometry is nil")
-        }
     }
-
 
     private func checkCameraPermission() {
         print("CameraViewController: checkCameraPermission")
@@ -186,24 +198,65 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         }
     }
 
+    @objc private func handlePinchGesture(_ gesture: UIPinchGestureRecognizer) {
+        guard imageView != nil else { return }
+
+        if gesture.state == .began || gesture.state == .changed {
+            scale *= gesture.scale
+            gesture.scale = 1.0
+            applyTransform()
+        }
+    }
+
     private func updateLayoutForCurrentOrientation() {
-        guard let imageView = imageView, let dismissButton = dismissButton else { return }
+        guard imageView != nil else { return }
 
         let orientation = UIDevice.current.orientation
 
-        if orientation.isLandscape {
-            dismissButtonTopConstraint?.isActive = false
-            dismissButtonBottomConstraint?.isActive = true
-        } else {
-            dismissButtonBottomConstraint?.isActive = false
-            dismissButtonTopConstraint?.isActive = true
+        // Adjust the rotation angle based on the specific orientations
+        switch orientation {
+        case .portrait:
+            rotationAngle = 0 // No rotation needed for portrait
+            // Set dismiss button to top-right corner in portrait
+            updateDismissButtonConstraints(top: 50, leading: nil, trailing: -40, bottom: nil)
+        case .landscapeLeft:
+            rotationAngle = .pi / 2 // Rotate 90 degrees for landscape left
+            // Set dismiss button to top-right corner in landscape (bottom-right as viewed)
+            updateDismissButtonConstraints(top: nil, leading: nil, trailing: -40, bottom: -40)
+        default:
+            break
         }
 
-        // Adjust image view transform for the current orientation
-        if orientation.isLandscape {
-            imageView.transform = CGAffineTransform(rotationAngle: .pi / 2).scaledBy(x: scale, y: scale)
-        } else {
-            imageView.transform = CGAffineTransform(scaleX: scale, y: scale)
+        applyTransform()
+    }
+
+    private func updateDismissButtonConstraints(top: CGFloat?, leading: CGFloat?, trailing: CGFloat?, bottom: CGFloat?) {
+        dismissButtonTopConstraint?.isActive = false
+        dismissButtonLeadingConstraint?.isActive = false
+        dismissButtonTrailingConstraint?.isActive = false
+        dismissButtonBottomConstraint?.isActive = false
+
+        if let top = top {
+            dismissButtonTopConstraint = dismissButton?.topAnchor.constraint(equalTo: view.topAnchor, constant: top)
+            dismissButtonTopConstraint?.isActive = true
+        }
+        if let leading = leading {
+            dismissButtonLeadingConstraint = dismissButton?.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leading)
+            dismissButtonLeadingConstraint?.isActive = true
+        }
+        if let trailing = trailing {
+            dismissButtonTrailingConstraint = dismissButton?.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: trailing)
+            dismissButtonTrailingConstraint?.isActive = true
+        }
+        if let bottom = bottom {
+            dismissButtonBottomConstraint = dismissButton?.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottom)
+            dismissButtonBottomConstraint?.isActive = true
         }
     }
+
+    private func applyTransform() {
+        // Apply both the scale and the rotation without altering the orientation
+        imageView?.transform = CGAffineTransform(rotationAngle: rotationAngle).scaledBy(x: scale, y: scale)
+    }
 }
+

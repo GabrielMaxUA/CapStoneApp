@@ -28,6 +28,14 @@ class Cart: ObservableObject {
         return items.contains { $0.imageName == imageName }
     }
     
+    func checkout() {
+        for index in items.indices {
+            items[index].isCheckedOut = true
+        }
+        saveCartItems()
+    }
+    
+    
     private func saveCartItems() {
         if let encoded = try? JSONEncoder().encode(items) {
             UserDefaults.standard.set(encoded, forKey: "cartItems")
@@ -47,4 +55,5 @@ class Cart: ObservableObject {
 
 struct CartItem: Codable, Equatable {
     let imageName: String
+    var isCheckedOut: Bool = false
 }
